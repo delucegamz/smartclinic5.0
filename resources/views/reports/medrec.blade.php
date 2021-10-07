@@ -74,7 +74,8 @@ Smart Clinic System - Data Rekam Medis
 						<th class="column-complaint-title">Keluhan</th>
 						<th class="column-diagnosys-title">Diagnosis</th>
 						<th class="column-doctor-title">Dokter</th>
-						<th class="column-action-title">Action</th>
+                        <th class="column-doctor-title">View</th>
+						<th class="column-action-title">Print</th>
 					<tr>
 				<thead>
 				<tbody>
@@ -96,6 +97,8 @@ Smart Clinic System - Data Rekam Medis
 						<td class="column-complaint">{{ $o->keluhan }}</td>
 						<td class="column-diagnosys">{{ $o->diagnosa_dokter }}</td>
 						<td class="column-doctor">{{ $o->dokter_rawat }}</td>
+                        <td class="column-action">
+                            <img src="{{URL::asset('assets/images/icon-view.png')}}" alt="View" /></td>
 						<td class="column-action">
 							<a href="{{ url( 'print/medrec_detail' ) . '?id=' . $o->id_pemeriksaan_poli }}" title="Print" class="print" target="_blank"><img src="{{URL::asset('assets/images/icon-print.png')}}" alt="Print" /></a>
 						</td>
