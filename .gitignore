@@ -1,0 +1,11 @@
+Homestead.yaml
+Homestead.json
+.env
+config/*
+storage/*
+logs/* 
+backup/*
+update/*
+*.zip
+*.sql
+*.rar
