@@ -74,18 +74,20 @@ Smart Clinic System - Data Rekam Medis
 						<th class="column-complaint-title">Keluhan</th>
 						<th class="column-diagnosys-title">Diagnosis</th>
 						<th class="column-doctor-title">Dokter</th>
-                        <th class="column-doctor-title">View</th>
-						<th class="column-action-title">Print</th>
+                        <th class="column-doctor-title">Action</th>
+
 					<tr>
 				<thead>
 				<tbody>
 				@if( count( $datas ) )
 					<?php $i = 1; ?>
 					@foreach( $datas as $o )
-					<?php $p = App\PoliRegistration::find( $o->id_pendaftaran_poli ); ?>
+					<?php 
+                    $p = App\PoliRegistration::find( $o->id_pendaftaran_poli ); 
+                    ?>
 					<tr class="item" id="item-{{ $o->id_pemeriksaan_poli }}">
 						<td class="column-no">{{ $i }}</td>
-						<td class="column-register-date">{{ date( 'd-m-Y H:i:s', strtotime( $p->tgl_selesai ) ) }}</td>
+						<td class="column-register-date">{{ date( 'd-m-Y H:i:s', strtotime( $p->tgl_selesai )) }}</td>
 						@if( !$participant )
 						<td class="column-nik">{{ get_participant_nik( $o->id_peserta ) }}</td>
 						<td class="column-name">{{ get_participant_name( $o->id_peserta ) }}</td>
@@ -97,10 +99,13 @@ Smart Clinic System - Data Rekam Medis
 						<td class="column-complaint">{{ $o->keluhan }}</td>
 						<td class="column-diagnosys">{{ $o->diagnosa_dokter }}</td>
 						<td class="column-doctor">{{ $o->dokter_rawat }}</td>
-                        <td class="column-action">
-                            <img src="{{URL::asset('assets/images/icon-view.png')}}" alt="View" /></td>
-						<td class="column-action">
-							<a href="{{ url( 'print/medrec_detail' ) . '?id=' . $o->id_pemeriksaan_poli }}" title="Print" class="print" target="_blank"><img src="{{URL::asset('assets/images/icon-print.png')}}" alt="Print" /></a>
+    
+     <!-- MENAMBAHKAN BUTTON VIEW/DETAIL DENGAN MODAL BOOTSTRAP --> 
+                        <td class="column-action text-center">
+                            <a class="btn btn-default btn-xs">
+                               <i class="fa fa-book" alt="View" /></i>Detail
+                            </a>    					
+							<a href="{{ url( 'print/medrec_detail' ) . '?id=' . $o->id_pemeriksaan_poli }}" title="Print" class="btn btn-default btn-xs print" target="_blank"><img src="{{URL::asset('assets/images/icon-print.png')}}" alt="Print" />Print</a>
 						</td>
 					<tr>
 						<?php $i++ ?>
