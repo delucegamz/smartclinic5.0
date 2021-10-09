@@ -1,4 +1,4 @@
-
+                
 @extends('layouts.app')
 
 @section('page_title')
@@ -26,7 +26,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
     <div class="content-title"><h1>DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA</h1></div>
 
     <div class="narrow">
-        <form enctype="multipart/form-data" id="import-livestock-form" method="get" class="wp-upload-form" action="{{ url( 'report/top10disease' ) }}">
+        <form enctype="multipart/form-data" id="import-livestock-form" method="get" class="wp-upload-form" action="{{ url( 'report/accident' ) }}">
             <div class="row">
                 <div class="col-xs-5">
                     <div class="form-group" id="elm-date-from">
@@ -81,8 +81,9 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <th style="">L/P</th>
                                 <th style="">Factory</th>
                                 <th style="">Departemen</th>
-                                <th style="">Tanggal Kejadian</th>
+                                <th style="">Tanggal Pelaporan</th>
                                 <th style="">Tindakan</th>
+                                <th style="">Prewiev</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,7 +110,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <td>{{ ucwords( $participant->jenis_kelamin ) }}</td>
                                 <td>{{ $data->nama_factory }}</td>
                                 <td>{{ $data->nama_departemen }}</td>
-                                <td>{{ ( $accident ) ? $accident->tanggal_kejadian : '' }}</td>
+                                <td>{{ ( $accident ) ? $accident->tanggal_lapor : '' }}</td>
                                 <td>
                                 @php
                                     if( $sickletter ){
@@ -123,6 +124,11 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                     }
                                 @endphp
                                 </td>
+                                <td id="detail" class="column-action text-center">
+                            <a class="btn btn-default btn-xs fa fa-eye" data-toggle="modal" data-target="#modal-detail"
+                            data-namapeserta = "{{ $participant->nama_peserta }}"
+                            data-nikpeserta = "{{ $participant->nik_peserta }}"
+                            >  Detail</a></td>
                             </tr>
                             @php 
                                 $i++; 
@@ -162,4 +168,40 @@ $(document).ready(function(){
     });
 });
 </script>
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Detail </h4>
+            </div>
+        </div class="modal-body table-responsive">
+         <table class="table table-bordered no-margin" >
+             <tbody>
+                 <tr>
+                    <th style="">nama</th>
+                    <td ><span id="nama_peserta"></span> </td> 
+                 </tr>
+                 <tr>
+                    <th style="">nik</th>
+                    <td ><span id="nik_peserta"></span> </td> 
+                 </tr>
+             </tbody>
+         </table>
+    </div>    
+</div>
+<script>
+    $(document).ready(function(){
+        $(document).on('click','#detail', function(){
+            var nama = $(this).data('namapeserta');
+            var nik = $(this).data('nikpeserta');
+            $('#nama_peserta').val(nama);
+            $('#nik_peserta').val(nik);
+        })
+    })
+</script>
+
+
 @stop
