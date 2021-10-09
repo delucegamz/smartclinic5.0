@@ -102,7 +102,8 @@ Smart Clinic System - Data Rekam Medis
     
      <!-- MENAMBAHKAN BUTTON VIEW/DETAIL DENGAN MODAL BOOTSTRAP --> 
                         <td class="column-action text-center">
-                            <a class="btn btn-default btn-xs">
+                            <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-detail"
+                            >
                                <i class="fa fa-book" alt="View" /></i>Detail
                             </a>    					
 							<a href="{{ url( 'print/medrec_detail' ) . '?id=' . $o->id_pemeriksaan_poli }}" title="Print" class="btn btn-default btn-xs print" target="_blank"><img src="{{URL::asset('assets/images/icon-print.png')}}" alt="Print" />Print</a>

@@ -207,7 +207,7 @@
                                         @if( current_user_can( 'laporan_organisasi' ) )<li><i class="fa fa-li fa-circle"></i><a href="{{ url( 'report/organization' ) }}">Laporan Organisasi</a></li>@endif
                                         @if( current_user_can( 'laporan_kunjungan' ) )<li><i class="fa fa-li fa-circle"></i><a href="{{ url( 'report/visit' ) }}">Laporan Kunjungan</a></li>@endif
                                         @if( current_user_can( 'laporan_rekap_kunjungan' ) )<li><i class="fa fa-li fa-circle"></i><a href="{{ url( 'report/recap' ) }}">Laporan Rekap Kunjungan</a></li>@endif
-                                        @if( current_user_can( 'laporan_rekam_medis' ) )<li><i class="fa fa-li fa-circle"></i><a href="{{ url( 'report/medrec' ) }}">Laporan Rekam Medis</a></li>@endif
+                                        @if( current_user_can( 'laporan_rekam_medis' ) )<li><i class="fa fa-li fa-circle"></i><a href="{{ url( 'report/medrec2' ) }}">Laporan Rekam Medis</a></li>@endif
                                         @if( current_user_can( 'laporan_rekam_medis' ) )<li><i class="fa fa-li fa-circle"></i><a href="{{ url( 'report/accident' ) }}">Laporan Kecelakaan Kerja</a></li>@endif
                                         @if( current_user_can( 'laporan_anc' ) )<li><i class="fa fa-li fa-circle"></i><a href="{{ url( 'report/anc' ) }}">Laporan ANC</a></li>@endif
                                         @if( current_user_can( 'laporan_observasi' ) )<li><i class="fa fa-li fa-circle"></i><a href="{{ url( 'report/observation' ) }}">Laporan Observasi</a></li>@endif

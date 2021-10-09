@@ -27,6 +27,7 @@ use App\MedicineGroup;
 use App\Observation;
 use App\Anc;
 use App\Staff;
+use App\Medrec2;
 use App\JobTitle;
 use App\Diagnosis;
 use DB;
@@ -330,6 +331,15 @@ class ReportController extends Controller
             'date_to' => $date_to 
         ]);
     }
+
+    public function medrec2(){
+        $halaman= 'medrec';
+        $medrec_list = medrec2::all();
+        return view('reports/medrec2', compact('halaman','medrec_list'));
+
+
+    }
+
 
     public function accident(){
         if( !current_user_can( 'laporan_rekam_medis' ) ) die( 'Anda tidak diperbolehkan melihat halaman ini!' );

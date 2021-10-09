@@ -31,7 +31,12 @@ class Participant extends Model
         'id_pengguna' 
     );
 
-	public static function generate_id(){
+    public function polimedrec(){
+        return $this->belongsTo(polimedrec::class);
+    }
+
+
+   	public static function generate_id(){
         $ids = DB::table( 'm_peserta' )
                 ->select( 'kode_peserta' )
                 ->orderBy( 'kode_peserta', 'desc' )
