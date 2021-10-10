@@ -57,7 +57,17 @@ Smart Clinic System - Data Rekam Medis
                 <td>{{ $medrecdata->kode_diagnosa}}</td>
                 <td>{{ $medrecdata->nama_diagnosa}}</td>
                 <td>
-                    <a class="btn btn-default fa fa-eye">detail</a>
+                    <a id="detail" class="btn btn-default fa fa-eye" data-toggle='modal' 
+                    data-target ="#modal-detail"
+                    data-nik = "{{ $medrecdata->nik_peserta}}"
+                    data-nama = "{{ $medrecdata->nama_peserta}}"
+                    data-factory = "{{ $medrecdata->nama_factory}}"
+                    data-departemen = "{{ $medrecdata->nama_departemen}}"
+                    data-diagnosa = "{{ $medrecdata->kode_diagnosa}}"
+                    data-namadiagnosa = "{{ $medrecdata->nama_diagnosa}}"
+                    data-keluhan = "{{ $medrecdata->keluhan}}"
+                    >detail</a>
+                    
                 </td>
             </tr>
         <?php endforeach ?>
@@ -67,4 +77,43 @@ Smart Clinic System - Data Rekam Medis
     <p>Tidak ada data pasien</p>
     @endif 
 </div>
+
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times</span>
+                </button>
+                <h4 class="modal-title">Data Detail Rekam Medis </h4>
+            </div>
+            <div class="modal-body table-responsive">
+                <table class="table table-bordered no-margin">
+                    <tbody>
+                        <tr>
+                            <th style="">NIK Pasien</th>
+                            <td><span id="nik_peserta"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="">Data Keluhan</th>
+                            <td><span id="keluhan"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on('click', '#detail', function() {
+          var niks = $(this).data('nik');
+          var keluhans = $(this).data('keluhan');
+          $('#nik_peserta').text(niks);
+          $('#keluhan').text(keluhans);  
+        })
+    })
+</script>
 @stop

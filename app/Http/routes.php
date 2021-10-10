@@ -179,7 +179,12 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get( 'report/visit', 'ReportController@visit' );
 	Route::get( 'report/recap', 'ReportController@recap' );
 	Route::get( 'report/medrec', 'ReportController@medrec' );
+	
+// ROUTE UNTUK LAPORAN MEDREC2
 	Route::get( 'report/medrec2', 'Medrec2Controller@index' );
+	Route::get( 'report/medrec2/{medrec2}', 'Medrec2Controller@show' );
+	
+
 	Route::get( 'report/accident', 'ReportController@accident' );
 	Route::get( 'report/anc', 'ReportController@anc' );
 	Route::get( 'report/observation', 'ReportController@observation' );
