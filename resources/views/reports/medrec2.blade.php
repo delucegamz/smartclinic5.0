@@ -25,10 +25,14 @@ Smart Clinic System - Data Rekam Medis
 <div id="medrec2">
     <div>
         <h2>Data Rekam Medis</h2>
+        <div class="pull-right">
+            <strong>Jumlah Pasien : {{$jumlah_pasien}} </strong>
+        </div>
+    
     </div>
 
     @if (!empty($medrec_list))
-
+  
     
     <table class="table">
         <thead>
@@ -60,7 +64,7 @@ Smart Clinic System - Data Rekam Medis
         </tbody>
     </table>
     @else
-    <p>Tidak ada data siswa</p>
+    <p>Tidak ada data pasien</p>
     @endif 
 </div>
 @stop
