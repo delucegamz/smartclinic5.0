@@ -181,8 +181,9 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get( 'report/medrec', 'ReportController@medrec' );
 	
 // ROUTE UNTUK LAPORAN MEDREC2
-	Route::get( 'report/medrec2', 'Medrec2Controller@index' );
-	Route::get( 'report/medrec2/{medrec2}', 'Medrec2Controller@show' );
+	Route::get( 'reports/medrec2', 'Medrec2Controller@index' );
+	Route::get( 'reports/medrec2/cari', 'Medrec2Controller@cari');
+	Route::resource('reports','Medrec2Controller');
 	
 
 	Route::get( 'report/accident', 'ReportController@accident' );

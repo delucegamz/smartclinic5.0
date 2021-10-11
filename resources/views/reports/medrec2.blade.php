@@ -20,15 +20,19 @@ Smart Clinic System - Data Rekam Medis
 <link rel="stylesheet" href="{{URL::asset('assets/css/jquery-ui-timepicker-addon.css')}}">
 <link rel="stylesheet" href="{{URL::asset('assets/css/bootstrap-chosen.css')}}">
 @stop
-
 @section('content')
+
 <div id="medrec2">
+
+    
+
     <div>
         <h2>Data Rekam Medis</h2>
+        @include('reports.form_pencarian')
         <div class="pull-right">
             <strong>Jumlah Pasien : {{$jumlah_pasien}} </strong>
         </div>
-    
+         
     </div>
 
     @if (!empty($medrec_list))
@@ -78,6 +82,7 @@ Smart Clinic System - Data Rekam Medis
     @endif 
 </div>
 
+              <!-- menampilkan modal detail saat klik tombol detail -->
 <div class="modal fade" id="modal-detail">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -105,7 +110,8 @@ Smart Clinic System - Data Rekam Medis
         </div>
     </div>
 </div>
-
+ 
+ <!-- variable ajax untuk isi modal tombol detail -->
 <script type="text/javascript">
     $(document).ready(function(){
         $(document).on('click', '#detail', function() {
