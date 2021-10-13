@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('page_title')
@@ -10,6 +9,7 @@ Smart Clinic System - Data Rekam Medis
 <script type="text/javascript" src="{{URL::asset('assets/js/jquery-ui.min.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('assets/js/jquery-ui-timepicker-addon.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('assets/js/chosen.jquery.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @stop
 
 @section('styles')
@@ -19,27 +19,104 @@ Smart Clinic System - Data Rekam Medis
 <link rel="stylesheet" href="{{URL::asset('assets/css/jquery-ui.theme.min.css')}}">
 <link rel="stylesheet" href="{{URL::asset('assets/css/jquery-ui-timepicker-addon.css')}}">
 <link rel="stylesheet" href="{{URL::asset('assets/css/bootstrap-chosen.css')}}">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
+
 @section('content')
-
 <div id="medrec2">
-
-    
-
+    {!! Form::open(['url' => 'reports/medrec2', 'method' => 'GET']) !!}
     <div>
         <h2 align="center">Data Rekam Medis</h2>
-        @include('reports.form_pencariandate')
+        <div id="pencariandate">
+
+            <div class="">
+                <div class="row">
+                    <div class="col-12 col-sm-3">
+                        <div class="form-group">
+                            <label for="filter_by">Filter By</label>
+                            <select name="filter_by" class="form-control input-sm" id="filter_by" required>
+                                <option value="">Pilih Filter</option>
+                                <option value="poli" {{ ($filter_by=='poli' ) ? 'selected' : '' }}>Poli</option>
+                                <option value="diagnosa" {{ $filter_by=='diagnosa' ? 'selected' : '' }}>
+                                    Diagnosa
+                                </option>
+                                <option value="tanggal" {{ $filter_by=='tanggal' ? 'selected' : '' }}>Tanggal</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-3 filter poli-filter"
+                        style="display : {{$filter_by == 'poli' ? 'block' : 'none'}};">
+                        <div class="form-group">
+                            <label for="nama_poli">Poli</label>
+                            <select name="nama_poli" class="form-control input-sm" id="nama_poli">
+                                <option value="">Pilih Poli</option>
+                                @foreach ($polies as $poli)
+                                <option value="{{$poli->nama_poli}}" {{ $poli->nama_poli == $nama_poli ? 'selected' :
+                                    ''}}>
+                                    {{$poli->nama_poli}}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-3 filter diagnosa-filter"
+                        style="display: {{$filter_by == 'diagnosa' ? 'block' : 'none'}};">
+                        <div class="form-group">
+                            <label for="diagnoses">Diagnosis</label>
+                            <select name="kode_diagnosa" class="form-control input-sm select2" id="diagnoses">
+                                <option value="">Pilih Diagnosa</option>
+                                @foreach ($diagnoses as $diagnosa)
+                                <option value="{{$diagnosa->kode_diagnosa}}" {{ $kode_diagnosa==$diagnosa->kode_diagnosa
+                                    ? 'selected' : ''}}>{{$diagnosa->nama_diagnosa}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-3">
+                        <div class="form-group">
+                            <label for="start_date">From</label>
+                            <input type="date" class="form-control input-sm" id="start_date" value="{{$start_date}}"
+                                name="start_date" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-3">
+                        <div class="form-group">
+                            <label for="end_date">To</label>
+                            <input type="date" class="form-control input-sm" id="end_date" name="end_date"
+                                value="{{$end_date}}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1">
+                        <label for="" style="visibility: hidden;">Cari</label>
+                        {!! Form::button('cari', ['class' => 'btn btn-primary btn-block',
+                        'style' => 'width: 150px','type' => 'submit']) !!}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <hr style="border: 1px solid">
-        @include('reports.form_pencarian')
-        
-         
+
+        <div id="pencarian" style="margin-top: 40px;">
+            <div class="input-group" style="width:300px">
+                <input id="nik_peserta" type="text" class="form-control" placeholder="masukan nik peserta"
+                    name="nik_peserta" value="{{$nik_peserta}}">
+                <span class="input-group-btn">
+                    {!! Form::button('cari', ['class' => 'btn btn-default',
+                    'style' => 'width: 150px','type' => 'submit']) !!}
+                </span>
+            </div>
+        </div>
     </div>
-    <div class="pull-right">
-            
-    </div>
+    {!! Form::close() !!}
+
+    <div class="pull-right"></div>
     @if (!empty($medrec_list))
-  
-    
     <table class="table">
         <thead>
             <tr>
@@ -52,39 +129,44 @@ Smart Clinic System - Data Rekam Medis
                 <th>View Data</th>
             </tr>
         </thead>
-    
+
         <tbody>
-        <?php foreach ($medrec_list as $medrecdata): ?>
+            <?php foreach ($medrec_list as $medrecdata): ?>
             <tr>
-                <td>{{ $medrecdata->nik_peserta}}</td>
-                <td>{{ $medrecdata->nama_peserta}}</td>
-                <td>{{ $medrecdata->nama_factory}}</td>
-                <td>{{ $medrecdata->created_at}}</td>
-                <td>{{ $medrecdata->iddiagnosa}}</td>
+                <td>{{ $medrecdata->nik_peserta }}</td>
+                <td>{{ $medrecdata->nama_peserta }}</td>
+                <td>{{ $medrecdata->nama_factory }}</td>
+                <td>{{ $medrecdata->created_at }}</td>
+                <td>{{ $medrecdata->iddiagnosa }}</td>
                 <td>{{ $medrecdata->nama_diagnosa}}</td>
                 <td>
-                    <a id="detail" class="btn btn-default fa fa-eye" data-toggle='modal' 
-                    data-target ="#modal-detail"
-                    data-nik = "{{ $medrecdata->nik_peserta}}"
-                    data-nama = "{{ $medrecdata->nama_peserta}}"
-                    data-factory = "{{ $medrecdata->nama_factory}}"
-                    data-departemen = "{{ $medrecdata->nama_departemen}}"
-                    data-diagnosa = "{{ $medrecdata->kode_diagnosa}}"
-                    data-namadiagnosa = "{{ $medrecdata->nama_diagnosa}}"
-                    data-keluhan = "{{ $medrecdata->keluhan}}"
-                    >detail</a>
-                    
+                    <a id="detail" class="btn btn-default fa fa-eye" data-toggle='modal' data-target="#modal-detail"
+                        data-nik="{{ $medrecdata->nik_peserta}}" data-nama="{{ $medrecdata->nama_peserta}}"
+                        data-factory="{{ $medrecdata->nama_factory}}"
+                        data-departemen="{{ $medrecdata->nama_departemen}}"
+                        data-diagnosa="{{ $medrecdata->kode_diagnosa}}"
+                        data-namadiagnosa="{{ $medrecdata->nama_diagnosa}}"
+                        data-keluhan="{{ $medrecdata->keluhan}}">detail</a>
+
                 </td>
             </tr>
-        <?php endforeach ?>
+            <?php endforeach ?>
         </tbody>
     </table>
+
+    <div><button class="btn btn-default" type="button" id="excel-export">Expor Excel</button></div>
     @else
     <p>Tidak ada data pasien</p>
-    @endif 
+    @endif
+    {{ $medrec_list->appends([
+    'start_date' => $start_date, 'end_date' => $end_date, 'nik_peserta' => $nik_peserta,
+    'filter_by' => $filter_by,
+    'nama_poli' => $nama_poli,
+    'kode_diagnosa' => $kode_diagnosa,
+    ])->links() }}
 </div>
 
-              <!-- menampilkan modal detail saat klik tombol detail -->
+<!-- menampilkan modal detail saat klik tombol detail -->
 <div class="modal fade" id="modal-detail">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -108,12 +190,11 @@ Smart Clinic System - Data Rekam Medis
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>
- 
- <!-- variable ajax untuk isi modal tombol detail -->
+
+<!-- variable ajax untuk isi modal tombol detail -->
 <script type="text/javascript">
     $(document).ready(function(){
         $(document).on('click', '#detail', function() {
@@ -121,7 +202,33 @@ Smart Clinic System - Data Rekam Medis
           var keluhans = $(this).data('keluhan');
           $('#nik_peserta').text(niks);
           $('#keluhan').text(keluhans);  
-        })
-    })
+        });
+
+        $('#filter_by').on('change', function () {
+            const filterBy = $(this).val();
+            $('.filter').hide();
+            $('#nama_poli').val("");
+            $('#diagnoses').val("");
+            $('.'+filterBy+'-filter').show();
+
+            if (filterBy == 'diagnosa') {
+                $('.select2').select2();
+            }
+        });
+        $('.select2').select2();
+
+        $('#excel-export').on('click', function () {
+            let filter = $('#filter_by').val();
+            let poli = $('#nama_poli').val();
+            let diagnose = $('#diagnoses').val();
+            let start_date = $('#start_date').val();
+            let end_date = $('#end_date').val();
+            let nikPeserta = $('#nik_peserta').val();
+
+            let queryParams = `filter_by=${filter}&nama_poli=${poli}&kode_diagnosa=${diagnose}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}`
+            
+            window.open('{{route('medrec.export')}}?'+queryParams, '_blank');
+        });
+    });
 </script>
-@stop
+@endsection

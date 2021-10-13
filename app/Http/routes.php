@@ -181,6 +181,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get( 'report/medrec', 'ReportController@medrec' );
 	
 // ROUTE UNTUK LAPORAN MEDREC2
+	Route::get('reports/export', 'Medrec2Controller@export')->name('medrec.export');
 	Route::get( 'reports/medrec2', 'Medrec2Controller@index' );
 	Route::get( 'reports/medrec2/cari', 'Medrec2Controller@cari');
 	Route::get( 'reports/medrec2/caridate', 'Medrec2Controller@caridate');
