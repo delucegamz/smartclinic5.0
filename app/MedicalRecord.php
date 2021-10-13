@@ -25,6 +25,7 @@ class MedicalRecord extends Model
         'catatan_pemeriksaan', 
         'pahk', 
         'tb', 
+        'created_at',
         'status',
         'id_pengguna', 
         'user_update' 

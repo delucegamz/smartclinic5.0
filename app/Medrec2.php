@@ -26,6 +26,7 @@ class Medrec2 extends Model
         'pahk', 
         'tb', 
         'status',
+        'created_at',
         'id_pengguna', 
         'user_update'
     );

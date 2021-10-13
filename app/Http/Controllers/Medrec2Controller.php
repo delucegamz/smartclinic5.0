@@ -50,4 +50,24 @@ class Medrec2Controller extends Controller
 		$jumlah_pasien = $medrec_list->count();
 		return view('reports/medrec2', compact('medrec_list','kata_kunci','pagination','jumlah_pasien'));
 	}
+
+	public function caridate(Request $request)
+	{
+		$fromdate = $request->input('fromdate');
+		$todate = $request->input('todate');
+
+		$query	= DB::table('v_medrec')
+				->where('created_at','>=',$fromdate)
+				->where('created_at','<=',$todate)
+				->get();
+
+		$medrec_list = $query->get();
+
+		
+		
+		
+		return view('reports/medrec2', compact('data','fromdate','todade'));
+	}
+
+
 }

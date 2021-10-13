@@ -27,14 +27,16 @@ Smart Clinic System - Data Rekam Medis
     
 
     <div>
-        <h2>Data Rekam Medis</h2>
+        <h2 align="center">Data Rekam Medis</h2>
+        @include('reports.form_pencariandate')
+        <hr style="border: 1px solid">
         @include('reports.form_pencarian')
-        <div class="pull-right">
-            <strong>Jumlah Pasien : {{$jumlah_pasien}} </strong>
-        </div>
+        
          
     </div>
-
+    <div class="pull-right">
+            
+    </div>
     @if (!empty($medrec_list))
   
     
@@ -44,7 +46,7 @@ Smart Clinic System - Data Rekam Medis
                 <th>NIK Peserta</th>
                 <th>Nama Peserta</th>
                 <th>Factory</th>
-                <th>Departemen</th>
+                <th>Created_at</th>
                 <th>Kode Diagnosa</th>
                 <th>Nama Diagnosa</th>
                 <th>View Data</th>
@@ -57,8 +59,8 @@ Smart Clinic System - Data Rekam Medis
                 <td>{{ $medrecdata->nik_peserta}}</td>
                 <td>{{ $medrecdata->nama_peserta}}</td>
                 <td>{{ $medrecdata->nama_factory}}</td>
-                <td>{{ $medrecdata->nama_departemen}}</td>
-                <td>{{ $medrecdata->kode_diagnosa}}</td>
+                <td>{{ $medrecdata->created_at}}</td>
+                <td>{{ $medrecdata->iddiagnosa}}</td>
                 <td>{{ $medrecdata->nama_diagnosa}}</td>
                 <td>
                     <a id="detail" class="btn btn-default fa fa-eye" data-toggle='modal' 
