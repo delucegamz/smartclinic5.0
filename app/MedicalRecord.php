@@ -7,6 +7,7 @@ use DB;
 
 class MedicalRecord extends Model
 {
+    public static $snakeAttributes = false;
     protected $table = 't_pemeriksaan_poli';
     protected $primaryKey = 'id_pemeriksaan_poli';
 	protected $fillable = array( 
@@ -57,5 +58,30 @@ class MedicalRecord extends Model
         // return $medrec->id_pemeriksaan_poli;
 
         return $id_registration;
+    }
+
+    public function poliRegistration()
+    {
+        return $this->belongsTo(PoliRegistration::class, 'id_pendaftaran_poli', 'id_pendaftaran');
+    }
+
+    public function participant()
+    {
+        return $this->belongsTo(Participant::class, 'id_peserta');
+    }
+
+    public function accident()
+    {
+        return $this->hasOne(Accident::class, 'id_pemeriksaan_poli', 'id_pemeriksaan_poli');
+    }
+
+    public function referenceLetter()
+    {
+        return $this->hasOne(ReferenceLetter::class, 'id_pemeriksaan_poli', 'id_pemeriksaan_poli');
+    }
+
+    public function sickLetter()
+    {
+        return $this->hasOne(SickLetter::class, 'id_pemeriksaan_poli', 'id_pemeriksaan_poli');
     }
 }

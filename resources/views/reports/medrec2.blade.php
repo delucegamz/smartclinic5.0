@@ -24,7 +24,7 @@ Smart Clinic System - Data Rekam Medis
 
 @section('content')
 <div id="medrec2">
-    {!! Form::open(['url' => 'reports/medrec2', 'method' => 'GET']) !!}
+    {!! Form::open(['id'=> 'medrec2form', 'url' => 'reports/medrec2', 'method' => 'GET']) !!}
     <div>
         <h2 align="center">Data Rekam Medis</h2>
         <div id="pencariandate">
@@ -69,7 +69,9 @@ Smart Clinic System - Data Rekam Medis
                                 <option value="">Pilih Diagnosa</option>
                                 @foreach ($diagnoses as $diagnosa)
                                 <option value="{{$diagnosa->kode_diagnosa}}" {{ $kode_diagnosa==$diagnosa->kode_diagnosa
-                                    ? 'selected' : ''}}>{{$diagnosa->nama_diagnosa}}</option>
+                                    ? 'selected' : ''}}>
+                                    {{ $diagnosa->kode_diagnosa }} - {{$diagnosa->nama_diagnosa}}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -78,15 +80,15 @@ Smart Clinic System - Data Rekam Medis
                     <div class="col-12 col-sm-3">
                         <div class="form-group">
                             <label for="start_date">From</label>
-                            <input type="date" class="form-control input-sm" id="start_date" value="{{$start_date}}"
-                                name="start_date" required>
+                            <input type="date" class="form-control input-sm date-filter" id="start_date"
+                                value="{{$start_date}}" name="start_date">
                         </div>
                     </div>
                     <div class="col-12 col-sm-3">
                         <div class="form-group">
                             <label for="end_date">To</label>
-                            <input type="date" class="form-control input-sm" id="end_date" name="end_date"
-                                value="{{$end_date}}" required>
+                            <input type="date" class="form-control input-sm date-filter" id="end_date" name="end_date"
+                                value="{{$end_date}}">
                         </div>
                     </div>
 
@@ -102,7 +104,8 @@ Smart Clinic System - Data Rekam Medis
 
         <hr style="border: 1px solid">
 
-        <div id="pencarian" style="margin-top: 40px;">
+        <div id="pencarian"
+            style="margin-top: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <div class="input-group" style="width:300px">
                 <input id="nik_peserta" type="text" class="form-control" placeholder="masukan nik peserta"
                     name="nik_peserta" value="{{$nik_peserta}}">
@@ -111,11 +114,28 @@ Smart Clinic System - Data Rekam Medis
                     'style' => 'width: 150px','type' => 'submit']) !!}
                 </span>
             </div>
+            <button class="btn btn-default" type="button" id="excel-export">Expor Excel</button>
+            {{-- <div class="pull-right">
+            </div> --}}
         </div>
+
+        <input type="hidden" name="per_page" id="per_page_hidden" value="{{$per_page}}">
     </div>
     {!! Form::close() !!}
 
-    <div class="pull-right"></div>
+    <div>
+        <div class="form-group">
+            <select class="form-control" style="max-width: 64px;" name="per_page" id="per_page">
+                <option value="10" {{$per_page==10 ? 'selected' : '' }}>10</option>
+                <option value="25" {{$per_page==25 ? 'selected' : '' }}>25</option>
+                <option value="50" {{$per_page==50 ? 'selected' : '' }}>50</option>
+            </select>
+        </div>
+
+        <div>
+            <p>Total: {{$medrec_list->total()}}</p>
+        </div>
+    </div>
     @if (!empty($medrec_list))
     <table class="table">
         <thead>
@@ -123,6 +143,7 @@ Smart Clinic System - Data Rekam Medis
                 <th>NIK Peserta</th>
                 <th>Nama Peserta</th>
                 <th>Factory</th>
+                <th>Poli</th>
                 <th>Created_at</th>
                 <th>Kode Diagnosa</th>
                 <th>Nama Diagnosa</th>
@@ -136,6 +157,7 @@ Smart Clinic System - Data Rekam Medis
                 <td>{{ $medrecdata->nik_peserta }}</td>
                 <td>{{ $medrecdata->nama_peserta }}</td>
                 <td>{{ $medrecdata->nama_factory }}</td>
+                <td>{{ $medrecdata->nama_poli }}</td>
                 <td>{{ $medrecdata->created_at }}</td>
                 <td>{{ $medrecdata->iddiagnosa }}</td>
                 <td>{{ $medrecdata->nama_diagnosa}}</td>
@@ -153,8 +175,6 @@ Smart Clinic System - Data Rekam Medis
             <?php endforeach ?>
         </tbody>
     </table>
-
-    <div><button class="btn btn-default" type="button" id="excel-export">Expor Excel</button></div>
     @else
     <p>Tidak ada data pasien</p>
     @endif
@@ -163,6 +183,7 @@ Smart Clinic System - Data Rekam Medis
     'filter_by' => $filter_by,
     'nama_poli' => $nama_poli,
     'kode_diagnosa' => $kode_diagnosa,
+    'per_page' => $per_page,
     ])->links() }}
 </div>
 
@@ -206,28 +227,63 @@ Smart Clinic System - Data Rekam Medis
 
         $('#filter_by').on('change', function () {
             const filterBy = $(this).val();
+            
             $('.filter').hide();
             $('#nama_poli').val("");
             $('#diagnoses').val("");
+
+            // tanggal
+            if (filterBy == 'tanggal') {
+                $('.date-filter').prop('required', true)
+            } else {
+                $('.date-filter').prop('required', false)
+            }
+
+            // diagnoses
+            if (filterBy == 'diagnosa') {
+                $('#diagnoses').prop('required', true);
+            }
+            else {
+                $('#diagnoses').prop('required', false);
+
+            }
+            // poli
+            if (filterBy == 'poli') {
+                $('#nama_poli').prop('required', true);
+            }
+            else {
+                $('#nama_poli').prop('required', false);
+
+            }
+
             $('.'+filterBy+'-filter').show();
 
             if (filterBy == 'diagnosa') {
                 $('.select2').select2();
             }
         });
+
         $('.select2').select2();
 
-        $('#excel-export').on('click', function () {
+        function getParams() {
             let filter = $('#filter_by').val();
             let poli = $('#nama_poli').val();
             let diagnose = $('#diagnoses').val();
             let start_date = $('#start_date').val();
             let end_date = $('#end_date').val();
             let nikPeserta = $('#nik_peserta').val();
+            let per_page = $('#per_page_hidden').val();
 
-            let queryParams = `filter_by=${filter}&nama_poli=${poli}&kode_diagnosa=${diagnose}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}`
-            
-            window.open('{{route('medrec.export')}}?'+queryParams, '_blank');
+           return `filter_by=${filter}&nama_poli=${poli}&kode_diagnosa=${diagnose}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}&per_page=${per_page}`
+        }
+
+        $('#excel-export').on('click', function () {
+            window.open('{{route('medrec.export')}}?'+getParams(), '_blank');
+        });
+
+        $('#per_page').on('change', function () {
+            $('#per_page_hidden').val($(this).val());
+            $('#medrec2form').submit();
         });
     });
 </script>

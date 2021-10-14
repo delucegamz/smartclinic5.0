@@ -24,6 +24,7 @@ class Medrec2Controller extends Controller
 		$filter_by = $request->input('filter_by');
 		$nama_poli = $request->input('nama_poli');
 		$kode_diagnosa = $request->input('kode_diagnosa');
+		$per_page = $request->input('per_page', 10);
 
     	$halaman = 'medrec2';
 
@@ -49,7 +50,7 @@ class Medrec2Controller extends Controller
 				$end_date = Carbon::createFromFormat('Y-m-d', $end_date)->toDateString();
 				return $query->whereDate('created_at', '<=', $end_date);
 			})
-			->paginate(25);
+			->paginate($per_page);
 
     	return view('reports/medrec2', [
 			'halaman'       => $halaman,
@@ -62,6 +63,7 @@ class Medrec2Controller extends Controller
 			'nik_peserta'   => $nik_peserta,
 			'polies'        => Poli::all(),
 			'diagnoses'     => $diagnoses,
+			'per_page'      => $per_page,
 		]);
 	}
 

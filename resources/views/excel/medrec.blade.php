@@ -4,6 +4,7 @@
             <th>NIK Peserta</th>
             <th>Nama Peserta</th>
             <th>Factory</th>
+            <th>Poli</th>
             <th>Created_at</th>
             <th>Kode Diagnosa</th>
             <th>Nama Diagnosa</th>
@@ -17,6 +18,7 @@
             <td>{{ $medrecdata->nik_peserta }}</td>
             <td>{{ $medrecdata->nama_peserta }}</td>
             <td>{{ $medrecdata->nama_factory }}</td>
+            <td>{{ $medrecdata->nama_poli }}</td>
             <td>{{ $medrecdata->created_at }}</td>
             <td>{{ $medrecdata->iddiagnosa }}</td>
             <td>{{ $medrecdata->nama_diagnosa}}</td>
