@@ -405,7 +405,6 @@ class ReportController extends Controller
         $start_date = $request->input('start_date');
 		$end_date = $request->input('end_date');
         $nik_peserta = $request->input('nik_peserta');
-        $per_page = $request->input('per_page', 10);
 
         if( !current_user_can( 'laporan_rekam_medis' ) ) die( 'Anda tidak diperbolehkan melihat halaman ini!' );
 
