@@ -181,6 +181,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get( 'report/medrec', 'ReportController@medrec' );
 	
 // ROUTE UNTUK LAPORAN MEDREC2
+	Route::get('reports/export', 'Medrec2Controller@export')->name('medrec.export');
 	Route::get( 'reports/medrec2', 'Medrec2Controller@index' );
 	Route::get( 'reports/medrec2/cari', 'Medrec2Controller@cari');
 	Route::get( 'reports/medrec2/caridate', 'Medrec2Controller@caridate');
@@ -188,6 +189,7 @@ Route::group(['middleware' => 'web'], function () {
 	
 
 	Route::get( 'report/accident', 'ReportController@accident' );
+	Route::get( 'report/accident/export', 'ReportController@export' )->name('accident.export');
 	Route::get( 'report/anc', 'ReportController@anc' );
 	Route::get( 'report/observation', 'ReportController@observation' );
 	Route::get( 'report/letter', 'ReportController@letter' );

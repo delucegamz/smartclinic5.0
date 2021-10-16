@@ -8,37 +8,100 @@ use App\ViewMedrec;
 use App\Participant;
 use App\Diagnosis;
 use App\Http\Requests;
+use App\Poli;
+use Carbon\Carbon;
+use Cache;
 use DB;
-
+use Excel;
 
 class Medrec2Controller extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-    	
+		$start_date = $request->input('start_date');
+		$end_date = $request->input('end_date');
+		$nik_peserta = $request->input('nik_peserta');
+		$filter_by = $request->input('filter_by');
+		$nama_poli = $request->input('nama_poli');
+		$kode_diagnosa = $request->input('kode_diagnosa');
+		$per_page = $request->input('per_page', 10);
+
     	$halaman = 'medrec2';
 
-    	/*$medrec_list = ViewMedrec::all();*/
-    	/*$medrec_list = DB::table('t_pemeriksaan_poli')
-        				->join('m_peserta', 't_pemeriksaan_poli.id_peserta', '=', 'm_peserta.id_peserta')
-            			->join('m_diagnosa', 't_pemeriksaan_poli.iddiagnosa', '=', 'm_diagnosa.kode_diagnosa')
-            			->select('t_pemeriksaan_poli.*', 'm_peserta.nik_peserta', 'm_diagnosa.nama_diagnosa')
-            			->get();*/
+		$diagnoses = Cache::remember('diagnoses', Carbon::now()->addHour(), function () {
+			return Diagnosis::orderBy('nama_diagnosa')->get(['kode_diagnosa', 'nama_diagnosa']);
+		});
 
-        $medrec_list = DB::table('t_pemeriksaan_poli')
+        $medrec_list = ViewMedrec::
+			when($nik_peserta, function ($query) use ($nik_peserta) {
+				return $query->where('nik_peserta', 'LIKE', '%'.$nik_peserta.'%');
+			})
+			->when($filter_by == 'poli' && $nama_poli, function ($query) use ($nama_poli) {
+				return $query->where('nama_poli', $nama_poli);
+			})
+			->when($filter_by == 'diagnosa' && $kode_diagnosa, function ($query) use ($kode_diagnosa) {
+				return $query->where('iddiagnosa', $kode_diagnosa);
+			})
+			->when($start_date, function ($query) use ($start_date) {
+				$start_date = Carbon::createFromFormat('Y-m-d', $start_date)->toDateString();
+				return $query->whereDate('created_at', '>=', $start_date);
+			})
+			->when($end_date, function ($query) use ($end_date) {
+				$end_date = Carbon::createFromFormat('Y-m-d', $end_date)->toDateString();
+				return $query->whereDate('created_at', '<=', $end_date);
+			})
+			->paginate($per_page);
 
-             			->join('m_peserta', function ($join) {
-             				$join -> on ('t_pemeriksaan_poli.id_peserta', '=', 'm_peserta.id_peserta');
-             			})
-             			->join('m_diagnosa', function ($join) {
-             				$join -> on ('t_pemeriksaan_poli.iddiagnosa', '=', 'm_diagnosa.kode_diagnosa');
-             			})
+    	return view('reports/medrec2', [
+			'halaman'       => $halaman,
+			'medrec_list'   => $medrec_list,
+			'start_date'    => $start_date,
+			'filter_by'     => $filter_by,
+			'nama_poli'     => $nama_poli,
+			'kode_diagnosa' => $kode_diagnosa,
+			'end_date'      => $end_date,
+			'nik_peserta'   => $nik_peserta,
+			'polies'        => Poli::all(),
+			'diagnoses'     => $diagnoses,
+			'per_page'      => $per_page,
+		]);
+	}
 
-             			->limit(10) -> get();
+	public function export(Request $request)
+	{
+		$start_date = $request->input('start_date');
+		$end_date = $request->input('end_date');
+		$nik_peserta = $request->input('nik_peserta');
+		$filter_by = $request->input('filter_by');
+		$nama_poli = $request->input('nama_poli');
+		$kode_diagnosa = $request->input('kode_diagnosa');
 
-    	$jumlah_pasien = count($medrec_list);
+		$medrec_list = ViewMedrec::
+			when($nik_peserta, function ($query) use ($nik_peserta) {
+				return $query->where('nik_peserta', 'LIKE', '%'.$nik_peserta.'%');
+			})
+			->when($filter_by == 'poli' && $nama_poli, function ($query) use ($nama_poli) {
+				return $query->where('nama_poli', $nama_poli);
+			})
+			->when($filter_by == 'diagnosa' && $kode_diagnosa, function ($query) use ($kode_diagnosa) {
+				return $query->where('iddiagnosa', $kode_diagnosa);
+			})
+			->when($start_date, function ($query) use ($start_date) {
+				$start_date = Carbon::createFromFormat('Y-m-d', $start_date)->toDateString();
+				return $query->whereDate('created_at', '>=', $start_date);
+			})
+			->when($end_date, function ($query) use ($end_date) {
+				$end_date = Carbon::createFromFormat('Y-m-d', $end_date)->toDateString();
+				return $query->whereDate('created_at', '<=', $end_date);
+			})->get();
 
-    	return view('reports/medrec2', compact('halaman', 'medrec_list','jumlah_pasien'));
+		return Excel::create('rekam_medis', function ($excel) use ($medrec_list) {
+			$excel->sheet('Sheet', function($sheet) use ($medrec_list) {
+				$sheet->loadView('excel.medrec', [
+					'medrec_list' => $medrec_list,
+				]);
+			});
+		})->download('xlsx');
 	}
 
 	public function cari(Request $request)
