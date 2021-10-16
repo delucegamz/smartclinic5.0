@@ -33,6 +33,8 @@ use App\Diagnosis;
 use DB;
 use Response;
 use Auth;
+use Carbon\Carbon;
+use Excel;
 
 class ReportController extends Controller
 {
@@ -341,50 +343,112 @@ class ReportController extends Controller
     }
 
 
-    public function accident(){
+    public function accident(Request $request)
+    {
+        $filter_by = $request->input('filter_by');
+        $accident = $request->input('accident');
+        $start_date = $request->input('start_date');
+		$end_date = $request->input('end_date');
+        $nik_peserta = $request->input('nik_peserta');
+        $per_page = $request->input('per_page', 10);
+
         if( !current_user_can( 'laporan_rekam_medis' ) ) die( 'Anda tidak diperbolehkan melihat halaman ini!' );
 
-        if( isset( $_GET['rows'] ) && $_GET['rows'] != '' ){
-            if( $_GET['rows'] == 'all' ){
-                $rows = 'all';
-            }else{
-                $rows = absint( $_GET['rows'] );
-            }
-        }else{
-            $rows = 10;
-        }
-
-        $date_from = isset( $_GET['date-from'] ) ? $_GET['date-from'] : '';
-        $date_from_full = $date_from . ' 00:00:00';
-        $date_to = isset( $_GET['date-to'] ) ? $_GET['date-to'] : '';
-        $date_to_full = $date_to . ' 23:59:59';
-
-        $poliregistrations = array(); $regs = NULL;
-        if( $date_from && $date_to ){
-            $regs = PoliRegistration::where( 'tgl_selesai', '>=', $date_from_full )->where( 'tgl_selesai', '<=', $date_to_full )->get();
-        }elseif( $date_from && !$date_to ){
-            $regs = PoliRegistration::where( 'tgl_selesai', '>=', $date_from_full )->get();
-        }elseif( !$date_from && $date_to ){
-            $regs = PoliRegistration::where( 'tgl_selesai', '<=', $date_to_full )->get();
-        }
-
-        if( $regs ){
-            foreach ( $regs as $reg ) {
-                $poliregistrations[] = $reg->id_pendaftaran;
-            }
-        }
-
-        if( $date_from || $date_to ){
-            $others = MedicalRecord::where( 'uraian', 22 )->orWhere( 'uraian', 44 )->whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();    
-        }else{
-            $others = MedicalRecord::where( 'uraian', 22 )->orWhere( 'uraian', 44 )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();    
-        }
+        $medicalRecords = MedicalRecord::with([
+                'participant',
+                'accident',
+                'poliRegistration',
+                'poliRegistration.poli',
+            ])
+            ->when($start_date || $end_date, function ($query) use($start_date, $end_date) {
+                return $query->whereHas('poliRegistration', function ($query) use ($start_date, $end_date) {
+                    if ($start_date) {
+                        $start_date = Carbon::createFromFormat('Y-m-d', $start_date)->startOfDay()->toDateTimeString();
+                        $query->whereDate('tgl_selesai', '>=', $start_date);
+                    }
+    
+                    if ($end_date) {
+                        $end_date = Carbon::createFromFormat('Y-m-d', $end_date)->endOfDay()->toDateTimeString();
+                        $query->whereDate('tgl_selesai', '<=', $end_date);
+                    }
+    
+                    return $query;
+                });
+            })
+            ->when($filter_by == 'nik' && $nik_peserta, function ($query) use ($nik_peserta) {
+                return $query->whereHas('participant', function ($query) use ($nik_peserta) {
+                    return $query->where('nik_peserta', $nik_peserta);
+                });
+            })
+            ->when($filter_by == 'kecelakaan' && $accident, function ($query) use ($accident) {
+                return $query->where('uraian', $accident);
+            })
+            ->withCount(['sickLetter', 'referenceLetter'])
+            ->orderBy( 'created_at', 'DESC')
+            ->paginate($per_page);
 
         return view( 'reports.accident', [ 
-            'datas' => $others,  
-            'date_from' => $date_from,
-            'date_to' => $date_to 
+            'medicalRecords' => $medicalRecords,
+            'filter_by'      => $filter_by,
+            'start_date'     => $start_date,
+            'end_date'       => $end_date,
+            'per_page'       => $per_page,
+            'nik_peserta'    => $nik_peserta,
+            'accident'       => $accident,
         ]);
+    }
+
+    public function export(Request $request)
+    {
+        $filter_by = $request->input('filter_by');
+        $accident = $request->input('accident');
+        $start_date = $request->input('start_date');
+		$end_date = $request->input('end_date');
+        $nik_peserta = $request->input('nik_peserta');
+        $per_page = $request->input('per_page', 10);
+
+        if( !current_user_can( 'laporan_rekam_medis' ) ) die( 'Anda tidak diperbolehkan melihat halaman ini!' );
+
+        $medicalRecords = MedicalRecord::with([
+                'participant',
+                'accident',
+                'poliRegistration',
+                'poliRegistration.poli',
+            ])
+            ->when($start_date || $end_date, function ($query) use($start_date, $end_date) {
+                return $query->whereHas('poliRegistration', function ($query) use ($start_date, $end_date) {
+                    if ($start_date) {
+                        $start_date = Carbon::createFromFormat('Y-m-d', $start_date)->startOfDay()->toDateTimeString();
+                        $query->whereDate('tgl_selesai', '>=', $start_date);
+                    }
+    
+                    if ($end_date) {
+                        $end_date = Carbon::createFromFormat('Y-m-d', $end_date)->endOfDay()->toDateTimeString();
+                        $query->whereDate('tgl_selesai', '<=', $end_date);
+                    }
+    
+                    return $query;
+                });
+            })
+            ->when($filter_by == 'nik' && $nik_peserta, function ($query) use ($nik_peserta) {
+                return $query->whereHas('participant', function ($query) use ($nik_peserta) {
+                    return $query->where('nik_peserta', $nik_peserta);
+                });
+            })
+            ->when($filter_by == 'kecelakaan' && $accident, function ($query) use ($accident) {
+                return $query->where('uraian', $accident);
+            })
+            ->withCount(['sickLetter', 'referenceLetter'])
+            ->orderBy( 'created_at', 'DESC')
+            ->get();
+
+            return Excel::create('kecelakaan_kerja', function ($excel) use ($medicalRecords) {
+                $excel->sheet('Sheet', function($sheet) use ($medicalRecords) {
+                    $sheet->loadView('excel.accident', [
+                        'medicalRecords' => $medicalRecords,
+                    ]);
+                });
+            })->download('xlsx');
     }
 
     public function observation(){

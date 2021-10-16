@@ -64,4 +64,9 @@ class PoliRegistration extends Model
 
         return $poliregistration->no_daftar ? $poliregistration->no_daftar : '';
     }
+
+    public function poli()
+    {
+        return $this->belongsTo(Poli::class, 'id_poli');
+    }
 }

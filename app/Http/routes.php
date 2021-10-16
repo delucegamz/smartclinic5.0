@@ -189,6 +189,7 @@ Route::group(['middleware' => 'web'], function () {
 	
 
 	Route::get( 'report/accident', 'ReportController@accident' );
+	Route::get( 'report/accident/export', 'ReportController@export' )->name('accident.export');
 	Route::get( 'report/anc', 'ReportController@anc' );
 	Route::get( 'report/observation', 'ReportController@observation' );
 	Route::get( 'report/letter', 'ReportController@letter' );
