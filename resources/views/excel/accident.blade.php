@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>No.</th>
+            <th>KAT</th>
             <th>NIK Peserta</th>
             <th>No Pemeriksaan Poli</th>
             <th>Nama Peserta</th>
@@ -43,6 +44,7 @@
         @foreach ($medicalRecords as $record)
         <tr>
             <td>{{$i}}</td>
+            <td>{{ $record->getUraianName() }}</td>
             <td>{{ $record->participant ? $record->participant->nik_peserta : '' }}</td>
             <td>{{ $record->no_pemeriksaan_poli }}</td>
             <td>{{ $record->nama_peserta }}</td>

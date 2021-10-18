@@ -50,7 +50,7 @@
                 @foreach( $medicalRecords as $record )
                 <tr>
                     <td>{{ $i }}</td>
-                    <td>{{ ( $record->uraian == 22 ? 'KK' : 'Kontrol' ) }}</td>
+                    <td>{{ $record->getUraianName() }}</td>
                     <td>{{ $record->participant->nama_peserta }}</td>
                     <td>{{ $record->participant->nik_peserta }}</td>
                     <td>{{ date( 'd-m-Y', strtotime( $record->participant->tanggal_lahir ) ) }}</td>
