@@ -4,33 +4,15 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c
+class ComposerStaticInit8dea6be9b7aca9081d2832adf50d4a75
 {
     public static $files = array (
-        '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
-        'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
-        '9d8e013a5160a09477beb8e44f8ae97b' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/adjoint.php',
-        '6e78d1bdea6248d6aa117229efae50f2' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/antidiagonal.php',
-        '4623d87924d94f5412fe5afbf1cef31d' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/cofactors.php',
-        '901fd1f6950a637ca85f66b701a45e13' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/determinant.php',
-        '83057abc0e4acc99ba80154ee5d02a49' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/diagonal.php',
-        '07b7fd7a434451149b4fd477fca0ce06' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/identity.php',
-        'c8d43b340583e07ae89f2a3baef2cf89' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/inverse.php',
-        '499bb10ed7a3aee2ba4c09a31a85e8d1' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/minors.php',
-        '1cad2e6414d652e8b1c64e8967f6f37d' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/trace.php',
-        '95a7f134ac17161d07def442b3b737e8' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/transpose.php',
-        'b3a6bc628377118d4b4b8ba08d1eb949' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/add.php',
-        '5fef6d0e407f3f8887266dfa4a6c534c' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/directsum.php',
-        '684ba247e1385946e3babdaa054119de' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/subtract.php',
-        'aa53dcba601214d17ad405b7c291b7e8' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/multiply.php',
-        '75c79eb1b25749b05a47976f32b0d8a2' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideby.php',
-        '6ab8ad87a734f276a6bcd5a0fe1289be' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideinto.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -73,6 +55,24 @@ class ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c
         '883af48563631547925fa4c3b48ead07' => __DIR__ . '/..' . '/markbaker/complex/classes/src/operations/multiply.php',
         'f190e3308e6ca23234a2875edc985c03' => __DIR__ . '/..' . '/markbaker/complex/classes/src/operations/divideby.php',
         'ac9e33ce6841aa5bf5d16d465a2f03a7' => __DIR__ . '/..' . '/markbaker/complex/classes/src/operations/divideinto.php',
+        '9d8e013a5160a09477beb8e44f8ae97b' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/adjoint.php',
+        '6e78d1bdea6248d6aa117229efae50f2' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/antidiagonal.php',
+        '4623d87924d94f5412fe5afbf1cef31d' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/cofactors.php',
+        '901fd1f6950a637ca85f66b701a45e13' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/determinant.php',
+        '83057abc0e4acc99ba80154ee5d02a49' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/diagonal.php',
+        '07b7fd7a434451149b4fd477fca0ce06' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/identity.php',
+        'c8d43b340583e07ae89f2a3baef2cf89' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/inverse.php',
+        '499bb10ed7a3aee2ba4c09a31a85e8d1' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/minors.php',
+        '1cad2e6414d652e8b1c64e8967f6f37d' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/trace.php',
+        '95a7f134ac17161d07def442b3b737e8' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/functions/transpose.php',
+        'b3a6bc628377118d4b4b8ba08d1eb949' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/add.php',
+        '5fef6d0e407f3f8887266dfa4a6c534c' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/directsum.php',
+        '684ba247e1385946e3babdaa054119de' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/subtract.php',
+        'aa53dcba601214d17ad405b7c291b7e8' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/multiply.php',
+        '75c79eb1b25749b05a47976f32b0d8a2' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideby.php',
+        '6ab8ad87a734f276a6bcd5a0fe1289be' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideinto.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
@@ -170,8 +170,8 @@ class ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -422,6 +422,7 @@ class ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c
         'App\\Http\\Controllers\\MedicineGroupController' => __DIR__ . '/../..' . '/app/Http/Controllers/MedicineGroupController.php',
         'App\\Http\\Controllers\\MedicineInController' => __DIR__ . '/../..' . '/app/Http/Controllers/MedicineInController.php',
         'App\\Http\\Controllers\\MedicineOutController' => __DIR__ . '/../..' . '/app/Http/Controllers/MedicineOutController.php',
+        'App\\Http\\Controllers\\Medrec2Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Medrec2Controller.php',
         'App\\Http\\Controllers\\ObservationActionController' => __DIR__ . '/../..' . '/app/Http/Controllers/ObservationActionController.php',
         'App\\Http\\Controllers\\ObservationController' => __DIR__ . '/../..' . '/app/Http/Controllers/ObservationController.php',
         'App\\Http\\Controllers\\ParticipantController' => __DIR__ . '/../..' . '/app/Http/Controllers/ParticipantController.php',
@@ -451,6 +452,7 @@ class ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c
         'App\\MedicineInDetail' => __DIR__ . '/../..' . '/app/MedicineInDetail.php',
         'App\\MedicineOut' => __DIR__ . '/../..' . '/app/MedicineOut.php',
         'App\\MedicineOutDetail' => __DIR__ . '/../..' . '/app/MedicineOutDetail.php',
+        'App\\Medrec2' => __DIR__ . '/../..' . '/app/Medrec2.php',
         'App\\Observation' => __DIR__ . '/../..' . '/app/Observation.php',
         'App\\ObservationAction' => __DIR__ . '/../..' . '/app/ObservationAction.php',
         'App\\ObservationActionTransaction' => __DIR__ . '/../..' . '/app/ObservationActionTransaction.php',
@@ -470,6 +472,7 @@ class ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c
         'App\\SickLetter' => __DIR__ . '/../..' . '/app/SickLetter.php',
         'App\\Staff' => __DIR__ . '/../..' . '/app/Staff.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
+        'App\\ViewMedrec' => __DIR__ . '/../..' . '/app/ViewMedrec.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
         'Carbon\\CarbonPeriod' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonPeriod.php',
@@ -3769,11 +3772,11 @@ class ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c::$fallbackDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit0f91af403783eca829d7fb38dfc95d2c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8dea6be9b7aca9081d2832adf50d4a75::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8dea6be9b7aca9081d2832adf50d4a75::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInit8dea6be9b7aca9081d2832adf50d4a75::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit8dea6be9b7aca9081d2832adf50d4a75::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit8dea6be9b7aca9081d2832adf50d4a75::$classMap;
 
         }, null, ClassLoader::class);
     }

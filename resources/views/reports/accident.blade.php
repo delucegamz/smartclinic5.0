@@ -56,8 +56,8 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                     <div class="col-12 col-sm-3 nik-filter" style="display: {{$filter_by=='nik' ? 'block' : 'none'}};">
                         <div class="form-group">
                             <label for="nik_peserta">NIK Peserta</label>
-                            <input id="nik_peserta" type="text" class="form-control" placeholder="masukan nik peserta"
-                                name="nik_peserta" value="{{$nik_peserta}}">
+                            <input id="nik_peserta" type="text" class="form-control input-sm"
+                                placeholder="masukan nik peserta" name="nik_peserta" value="{{$nik_peserta}}">
                         </div>
                     </div>
 

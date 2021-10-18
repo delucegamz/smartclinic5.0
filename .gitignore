@@ -9,3 +9,4 @@ update/*
 *.zip
 *.sql
 *.rar
+/vendor
