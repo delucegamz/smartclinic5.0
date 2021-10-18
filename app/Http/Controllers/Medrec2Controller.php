@@ -8,6 +8,7 @@ use App\ViewMedrec;
 use App\Participant;
 use App\Diagnosis;
 use App\Http\Requests;
+use App\MedicalRecord;
 use App\Poli;
 use Carbon\Carbon;
 use Cache;
@@ -22,7 +23,7 @@ class Medrec2Controller extends Controller
 		$end_date = $request->input('end_date');
 		$nik_peserta = $request->input('nik_peserta');
 		$filter_by = $request->input('filter_by');
-		$nama_poli = $request->input('nama_poli');
+		$id_poli = $request->input('id_poli');
 		$kode_diagnosa = $request->input('kode_diagnosa');
 		$per_page = $request->input('per_page', 10);
 
@@ -32,15 +33,25 @@ class Medrec2Controller extends Controller
 			return Diagnosis::orderBy('nama_diagnosa')->get(['kode_diagnosa', 'nama_diagnosa']);
 		});
 
-        $medrec_list = ViewMedrec::
-			when($nik_peserta, function ($query) use ($nik_peserta) {
-				return $query->where('nik_peserta', 'LIKE', '%'.$nik_peserta.'%');
+        $medrec_list = MedicalRecord::with([
+				'participant',
+				'diagnosis',
+				'poliRegistration.poli',
+			])
+			->when($nik_peserta, function ($query) use ($nik_peserta) {
+				return $query->whereHas('participant', function ($query) use ($nik_peserta) {
+					return $query->where('nik_peserta', 'LIKE', '%'.$nik_peserta.'%');
+				});
 			})
-			->when($filter_by == 'poli' && $nama_poli, function ($query) use ($nama_poli) {
-				return $query->where('nama_poli', $nama_poli);
+			->when($filter_by == 'poli' && $id_poli, function ($query) use ($id_poli) {
+				return $query->whereHas('poliRegistration', function ($query) use ($id_poli) {
+					return $query->where('id_poli', $id_poli);
+				});
 			})
 			->when($filter_by == 'diagnosa' && $kode_diagnosa, function ($query) use ($kode_diagnosa) {
-				return $query->where('iddiagnosa', $kode_diagnosa);
+				return $query->whereHas('diagnosis', function ($query) use ($kode_diagnosa) {
+					return $query->where('kode_diagnosa', $kode_diagnosa);
+				});
 			})
 			->when($start_date, function ($query) use ($start_date) {
 				$start_date = Carbon::createFromFormat('Y-m-d', $start_date)->toDateString();
@@ -50,6 +61,7 @@ class Medrec2Controller extends Controller
 				$end_date = Carbon::createFromFormat('Y-m-d', $end_date)->toDateString();
 				return $query->whereDate('created_at', '<=', $end_date);
 			})
+			->orderBy('created_at', 'DESC')
 			->paginate($per_page);
 
     	return view('reports/medrec2', [
@@ -57,7 +69,7 @@ class Medrec2Controller extends Controller
 			'medrec_list'   => $medrec_list,
 			'start_date'    => $start_date,
 			'filter_by'     => $filter_by,
-			'nama_poli'     => $nama_poli,
+			'id_poli'       => $id_poli,
 			'kode_diagnosa' => $kode_diagnosa,
 			'end_date'      => $end_date,
 			'nik_peserta'   => $nik_peserta,
@@ -73,27 +85,41 @@ class Medrec2Controller extends Controller
 		$end_date = $request->input('end_date');
 		$nik_peserta = $request->input('nik_peserta');
 		$filter_by = $request->input('filter_by');
-		$nama_poli = $request->input('nama_poli');
+		$id_poli = $request->input('id_poli');
 		$kode_diagnosa = $request->input('kode_diagnosa');
 
-		$medrec_list = ViewMedrec::
-			when($nik_peserta, function ($query) use ($nik_peserta) {
+		$medrec_list = MedicalRecord::with([
+			'participant',
+			'diagnosis',
+			'poliRegistration.poli',
+			'user',
+			'user.staff'
+		])
+		->when($nik_peserta, function ($query) use ($nik_peserta) {
+			return $query->whereHas('participant', function ($query) use ($nik_peserta) {
 				return $query->where('nik_peserta', 'LIKE', '%'.$nik_peserta.'%');
-			})
-			->when($filter_by == 'poli' && $nama_poli, function ($query) use ($nama_poli) {
-				return $query->where('nama_poli', $nama_poli);
-			})
-			->when($filter_by == 'diagnosa' && $kode_diagnosa, function ($query) use ($kode_diagnosa) {
-				return $query->where('iddiagnosa', $kode_diagnosa);
-			})
-			->when($start_date, function ($query) use ($start_date) {
-				$start_date = Carbon::createFromFormat('Y-m-d', $start_date)->toDateString();
-				return $query->whereDate('created_at', '>=', $start_date);
-			})
-			->when($end_date, function ($query) use ($end_date) {
-				$end_date = Carbon::createFromFormat('Y-m-d', $end_date)->toDateString();
-				return $query->whereDate('created_at', '<=', $end_date);
-			})->get();
+			});
+		})
+		->when($filter_by == 'poli' && $id_poli, function ($query) use ($id_poli) {
+			return $query->whereHas('poliRegistration', function ($query) use ($id_poli) {
+				return $query->where('id_poli', $id_poli);
+			});
+		})
+		->when($filter_by == 'diagnosa' && $kode_diagnosa, function ($query) use ($kode_diagnosa) {
+			return $query->whereHas('diagnosis', function ($query) use ($kode_diagnosa) {
+				return $query->where('kode_diagnosa', $kode_diagnosa);
+			});
+		})
+		->when($start_date, function ($query) use ($start_date) {
+			$start_date = Carbon::createFromFormat('Y-m-d', $start_date)->toDateString();
+			return $query->whereDate('created_at', '>=', $start_date);
+		})
+		->when($end_date, function ($query) use ($end_date) {
+			$end_date = Carbon::createFromFormat('Y-m-d', $end_date)->toDateString();
+			return $query->whereDate('created_at', '<=', $end_date);
+		})
+		->orderBy('created_at', 'DESC')
+		->get();
 
 		return Excel::create('rekam_medis', function ($excel) use ($medrec_list) {
 			$excel->sheet('Sheet', function($sheet) use ($medrec_list) {

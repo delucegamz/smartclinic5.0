@@ -48,11 +48,11 @@ Smart Clinic System - Data Rekam Medis
                     <div class="col-12 col-sm-3 filter poli-filter"
                         style="display : {{$filter_by == 'poli' ? 'block' : 'none'}};">
                         <div class="form-group">
-                            <label for="nama_poli">Poli</label>
-                            <select name="nama_poli" class="form-control input-sm" id="nama_poli">
+                            <label for="id_poli">Poli</label>
+                            <select name="id_poli" class="form-control input-sm" id="id_poli">
                                 <option value="">Pilih Poli</option>
                                 @foreach ($polies as $poli)
-                                <option value="{{$poli->nama_poli}}" {{ $poli->nama_poli == $nama_poli ? 'selected' :
+                                <option value="{{$poli->id_poli}}" {{ $poli->id_poli == $id_poli ? 'selected' :
                                     ''}}>
                                     {{$poli->nama_poli}}
                                 </option>
@@ -154,22 +154,21 @@ Smart Clinic System - Data Rekam Medis
         <tbody>
             <?php foreach ($medrec_list as $medrecdata): ?>
             <tr>
-                <td>{{ $medrecdata->nik_peserta }}</td>
+                <td>{{ $medrecdata->participant ? $medrecdata->participant->nik_peserta : '' }}</td>
                 <td>{{ $medrecdata->nama_peserta }}</td>
                 <td>{{ $medrecdata->nama_factory }}</td>
-                <td>{{ $medrecdata->nama_poli }}</td>
+                <td>{{ $medrecdata->poliRegistration ? $medrecdata->poliRegistration->poli->nama_poli : '' }}</td>
                 <td>{{ $medrecdata->created_at }}</td>
                 <td>{{ $medrecdata->iddiagnosa }}</td>
-                <td>{{ $medrecdata->nama_diagnosa}}</td>
+                <td>{{ $medrecdata->diagnosis ? $medrecdata->diagnosis->nama_diagnosa : ''}}</td>
                 <td>
                     <a id="detail" class="btn btn-default fa fa-eye" data-toggle='modal' data-target="#modal-detail"
-                        data-nik="{{ $medrecdata->nik_peserta}}" data-nama="{{ $medrecdata->nama_peserta}}"
-                        data-factory="{{ $medrecdata->nama_factory}}"
+                        data-nik="{{ $medrecdata->participant ? $medrecdata->participant->nik_peserta : ''}}"
+                        data-nama="{{ $medrecdata->nama_peserta}}" data-factory="{{ $medrecdata->nama_factory}}"
                         data-departemen="{{ $medrecdata->nama_departemen}}"
                         data-diagnosa="{{ $medrecdata->kode_diagnosa}}"
-                        data-namadiagnosa="{{ $medrecdata->nama_diagnosa}}"
+                        data-namadiagnosa="{{ $medrecdata->diagnosis ? $medrecdata->diagnosis->nama_diagnosa : ''}}"
                         data-keluhan="{{ $medrecdata->keluhan}}">detail</a>
-
                 </td>
             </tr>
             <?php endforeach ?>
@@ -181,7 +180,7 @@ Smart Clinic System - Data Rekam Medis
     {{ $medrec_list->appends([
     'start_date' => $start_date, 'end_date' => $end_date, 'nik_peserta' => $nik_peserta,
     'filter_by' => $filter_by,
-    'nama_poli' => $nama_poli,
+    'id_poli' => $id_poli,
     'kode_diagnosa' => $kode_diagnosa,
     'per_page' => $per_page,
     ])->links() }}
@@ -229,7 +228,7 @@ Smart Clinic System - Data Rekam Medis
             const filterBy = $(this).val();
             
             $('.filter').hide();
-            $('#nama_poli').val("");
+            $('#id_poli').val("");
             $('#diagnoses').val("");
 
             // tanggal
@@ -249,10 +248,10 @@ Smart Clinic System - Data Rekam Medis
             }
             // poli
             if (filterBy == 'poli') {
-                $('#nama_poli').prop('required', true);
+                $('#id_poli').prop('required', true);
             }
             else {
-                $('#nama_poli').prop('required', false);
+                $('#id_poli').prop('required', false);
 
             }
 
@@ -267,14 +266,14 @@ Smart Clinic System - Data Rekam Medis
 
         function getParams() {
             let filter = $('#filter_by').val();
-            let poli = $('#nama_poli').val();
+            let poli = $('#id_poli').val();
             let diagnose = $('#diagnoses').val();
             let start_date = $('#start_date').val();
             let end_date = $('#end_date').val();
             let nikPeserta = $('#nik_peserta').val();
             let per_page = $('#per_page_hidden').val();
 
-           return `filter_by=${filter}&nama_poli=${poli}&kode_diagnosa=${diagnose}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}&per_page=${per_page}`
+           return `filter_by=${filter}&id_poli=${poli}&kode_diagnosa=${diagnose}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}&per_page=${per_page}`
         }
 
         $('#excel-export').on('click', function () {

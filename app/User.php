@@ -45,4 +45,9 @@ class User extends Authenticatable
 
         return $latest_id;
     }
+
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class, 'id_karyawan');
+    }
 }

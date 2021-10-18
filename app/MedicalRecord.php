@@ -84,4 +84,14 @@ class MedicalRecord extends Model
     {
         return $this->hasOne(SickLetter::class, 'id_pemeriksaan_poli', 'id_pemeriksaan_poli');
     }
+
+    public function diagnosis()
+    {
+        return $this->belongsTo(Diagnosis::class, 'iddiagnosa', 'kode_diagnosa');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_pengguna');
+    }
 }
