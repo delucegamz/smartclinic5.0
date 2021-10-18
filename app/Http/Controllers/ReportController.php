@@ -385,7 +385,7 @@ class ReportController extends Controller
             ->when($filter_by == 'kecelakaan' && $accident, function ($query) use ($accident) {
                 return $query->where('uraian', $accident);
             })
-            ->when($filter_by == 'control' && $control, function ($query) use ($control) {
+            ->when($filter_by == 'kontrol' && $control, function ($query) use ($control) {
                 return $query->where('uraian', $control);
             })
             ->when(!$filter_by || ($filter_by == 'tanggal' || $filter_by == 'nik'), function ($query) {
@@ -449,7 +449,7 @@ class ReportController extends Controller
             ->when($filter_by == 'kecelakaan' && $accident, function ($query) use ($accident) {
                 return $query->where('uraian', $accident);
             })
-            ->when($filter_by == 'control' && $control, function ($query) use ($control) {
+            ->when($filter_by == 'kontrol' && $control, function ($query) use ($control) {
                 return $query->where('uraian', $control);
             })
             ->when(!$filter_by || ($filter_by == 'tanggal' || $filter_by == 'nik'), function ($query) {

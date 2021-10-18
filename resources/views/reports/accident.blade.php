@@ -37,16 +37,16 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                             <label for="filter_by">Filter By</label>
                             <select name="filter_by" class="form-control input-sm" id="filter_by">
                                 <option value="">Pilih Filter</option>
-                                <option value="kecelakaan" {{ $filter_by=='kecelakaan' ? 'selected' : '' }}>
+                                <option value="kecelakaan">
                                     Kecelakaan Kerja
                                 </option>
-                                <option value="kontrol" {{ $filter_by=='kontrol' ? 'selected' : '' }}>
+                                <option value="kontrol">
                                     Kontrol
                                 </option>
-                                <option value="nik" {{ $filter_by=='nik' ? 'selected' : '' }}>
+                                <option value="nik">
                                     NIK Peserta
                                 </option>
-                                <option value="tanggal" {{ $filter_by=='tanggal' ? 'selected' : '' }}>
+                                <option value="tanggal">
                                     Tanggal
                                 </option>
                             </select>
@@ -65,7 +65,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                         style="display: {{$filter_by=='kecelakaan' ? 'block' : 'none'}};">
                         <div class="form-group">
                             <label for="accident">Kecelakaan Kerja</label>
-                            <select name="accident" class="form-control input-sm" id="accident" required>
+                            <select name="accident" class="form-control input-sm" id="accident">
                                 <option value="">Pilih Filter</option>
                                 <option value="22" {{ $accident==22 ? 'selected' : '' }}>
                                     Kecelakaan Kerja
@@ -81,7 +81,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                         style="display: {{$filter_by=='kontrol' ? 'block' : 'none'}};">
                         <div class="form-group">
                             <label for="control">Kontrol</label>
-                            <select name="control" class="form-control input-sm" id="control" required>
+                            <select name="control" class="form-control input-sm" id="control">
                                 <option value="">Pilih Filter</option>
                                 <option value="44" {{ $control==44 ? 'selected' : '' }}>
                                     Kontrol Kecelakaan Kerja
@@ -289,6 +289,10 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             $('#nama-peserta').text(nama);
             $('#nik-peserta').text(nik);
         });
+
+        @if ($filter_by)
+            $('#filter_by').val('{{$filter_by}}')
+        @endif
 
         $('#filter_by').on('change', function () {
             var filterBy = $(this).val();
