@@ -60,6 +60,28 @@ class MedicalRecord extends Model
         return $id_registration;
     }
 
+    public function getUraianName()
+    {
+        switch ($this->uraian) {
+            case 22:
+                return 'Kecelakaan Kerja';
+                break;
+            case 33:
+                return 'Kecelakaan Lalu Lintas';
+                break;
+            case 44:
+                return 'Kontrol Kecelakaan Kerja';
+                break;
+            case 55:
+                return 'Kontrol Pasca Rawat Inap';
+                break;
+            
+            default:
+                '';
+                break;
+        }
+    }
+
     public function poliRegistration()
     {
         return $this->belongsTo(PoliRegistration::class, 'id_pendaftaran_poli', 'id_pendaftaran');

@@ -35,6 +35,7 @@ use Response;
 use Auth;
 use Carbon\Carbon;
 use Excel;
+use PDO;
 
 class ReportController extends Controller
 {
@@ -347,6 +348,7 @@ class ReportController extends Controller
     {
         $filter_by = $request->input('filter_by');
         $accident = $request->input('accident');
+        $control = $request->input('control');
         $start_date = $request->input('start_date');
 		$end_date = $request->input('end_date');
         $nik_peserta = $request->input('nik_peserta');
@@ -383,6 +385,12 @@ class ReportController extends Controller
             ->when($filter_by == 'kecelakaan' && $accident, function ($query) use ($accident) {
                 return $query->where('uraian', $accident);
             })
+            ->when($filter_by == 'control' && $control, function ($query) use ($control) {
+                return $query->where('uraian', $control);
+            })
+            ->when(!$filter_by || ($filter_by == 'tanggal' || $filter_by == 'nik'), function ($query) {
+                return $query->whereIn('uraian', [22, 33, 44, 55]);
+            })
             ->withCount(['sickLetter', 'referenceLetter'])
             ->orderBy( 'created_at', 'DESC')
             ->paginate($per_page);
@@ -395,6 +403,7 @@ class ReportController extends Controller
             'per_page'       => $per_page,
             'nik_peserta'    => $nik_peserta,
             'accident'       => $accident,
+            'control'        => $control,
         ]);
     }
 
@@ -402,6 +411,7 @@ class ReportController extends Controller
     {
         $filter_by = $request->input('filter_by');
         $accident = $request->input('accident');
+        $control = $request->input('control');
         $start_date = $request->input('start_date');
 		$end_date = $request->input('end_date');
         $nik_peserta = $request->input('nik_peserta');
@@ -413,6 +423,8 @@ class ReportController extends Controller
                 'accident',
                 'poliRegistration',
                 'poliRegistration.poli',
+                'user',
+                'user.staff',
             ])
             ->when($start_date || $end_date, function ($query) use($start_date, $end_date) {
                 return $query->whereHas('poliRegistration', function ($query) use ($start_date, $end_date) {
@@ -420,12 +432,12 @@ class ReportController extends Controller
                         $start_date = Carbon::createFromFormat('Y-m-d', $start_date)->startOfDay()->toDateTimeString();
                         $query->whereDate('tgl_selesai', '>=', $start_date);
                     }
-    
+
                     if ($end_date) {
                         $end_date = Carbon::createFromFormat('Y-m-d', $end_date)->endOfDay()->toDateTimeString();
                         $query->whereDate('tgl_selesai', '<=', $end_date);
                     }
-    
+
                     return $query;
                 });
             })
@@ -436,6 +448,12 @@ class ReportController extends Controller
             })
             ->when($filter_by == 'kecelakaan' && $accident, function ($query) use ($accident) {
                 return $query->where('uraian', $accident);
+            })
+            ->when($filter_by == 'control' && $control, function ($query) use ($control) {
+                return $query->where('uraian', $control);
+            })
+            ->when(!$filter_by || ($filter_by == 'tanggal' || $filter_by == 'nik'), function ($query) {
+                return $query->whereIn('uraian', [22, 33, 44, 55]);
             })
             ->withCount(['sickLetter', 'referenceLetter'])
             ->orderBy( 'created_at', 'DESC')

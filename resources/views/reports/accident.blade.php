@@ -35,10 +35,13 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                     <div class="col-12 col-sm-3">
                         <div class="form-group">
                             <label for="filter_by">Filter By</label>
-                            <select name="filter_by" class="form-control input-sm" id="filter_by" required>
+                            <select name="filter_by" class="form-control input-sm" id="filter_by">
                                 <option value="">Pilih Filter</option>
                                 <option value="kecelakaan" {{ $filter_by=='kecelakaan' ? 'selected' : '' }}>
                                     Kecelakaan Kerja
+                                </option>
+                                <option value="kontrol" {{ $filter_by=='kontrol' ? 'selected' : '' }}>
+                                    Kontrol
                                 </option>
                                 <option value="nik" {{ $filter_by=='nik' ? 'selected' : '' }}>
                                     NIK Peserta
@@ -70,14 +73,21 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <option value="33" {{ $accident==33 ? 'selected' : '' }}>
                                     Kecelakaan Lalu Lintas
                                 </option>
-                                <option value="44" {{ $accident==44 ? 'selected' : '' }}>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-3 control-filter"
+                        style="display: {{$filter_by=='kontrol' ? 'block' : 'none'}};">
+                        <div class="form-group">
+                            <label for="control">Kontrol</label>
+                            <select name="control" class="form-control input-sm" id="control" required>
+                                <option value="">Pilih Filter</option>
+                                <option value="44" {{ $control==44 ? 'selected' : '' }}>
                                     Kontrol Kecelakaan Kerja
                                 </option>
-                                <option value="55" {{ $accident==55 ? 'selected' : '' }}>
+                                <option value="55" {{ $control==55 ? 'selected' : '' }}>
                                     Kontrol Pasca Rawat Inap
-                                </option>
-                                <option value="66" {{ $accident==66 ? 'selected' : '' }}>
-                                    ANC
                                 </option>
                             </select>
                         </div>
@@ -177,7 +187,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                             @foreach( $medicalRecords as $record )
                             <tr>
                                 <td>{{ $i }}</td>
-                                <td>{{ ( $record->uraian == 22 ? 'KK' : 'Kontrol' ) }}</td>
+                                <td>{{ $record->getUraianName() }}</td>
                                 <td>{{ $record->participant->nama_peserta }}</td>
                                 <td>{{ $record->participant->nik_peserta }}</td>
                                 <td>{{ date( 'd-m-Y', strtotime( $record->participant->tanggal_lahir ) ) }}</td>
@@ -287,16 +297,29 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                 $('#accident').val('');
                 $('#accident').prop('required', true);
                 $('#nik_peserta').prop('required', false);
+                $('#control').prop('required', false);
                 $('.accident-filter').show();
             }
             else {
                 $('.accident-filter').hide();
             }
 
+            if (filterBy == 'kontrol') {
+                $('#control').val('');
+                $('#control').prop('required', true);
+                $('#nik_peserta').prop('required', false);
+                $('#accident').prop('required', false);
+                $('.control-filter').show();
+            }
+            else {
+                $('.control-filter').hide();
+            }
+
             if (filterBy == 'nik') {
                 $('#nik_peserta').val('');
                 $('#nik_peserta').prop('required', true);
                 $('#accident').prop('required', false);
+                $('#control').prop('required', false);
                 $('.nik-filter').show();
             }
             else {
@@ -316,12 +339,13 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
         function getParams() {
             let filter = $('#filter_by').val();
             let accident = $('#accident').val();
+            let control = $('#control').val();
             let start_date = $('#start_date').val();
             let end_date = $('#end_date').val();
             let nikPeserta = $('#nik_peserta').val();
             let per_page = $('#per_page_hidden').val();
 
-           return `filter_by=${filter}&accident=${accident}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}&per_page=${per_page}`
+           return `filter_by=${filter}&accident=${accident}&control=${control}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}&per_page=${per_page}`
         }
 
         $('#excel-export').on('click', function () {
