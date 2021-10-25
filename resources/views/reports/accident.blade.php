@@ -125,7 +125,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             $date_from_formatted = ( !empty( $start_date ) ) ? date( 'd M Y', strtotime( $start_date ) ) : '';
             $date_to_formatted = ( !empty( $end_date ) ) ? date( 'd M Y', strtotime( $end_date ) ) : date( 'd M Y' );
             @endphp
-            <div id="response-update">
+                <div id="response-update">
                 <div id="print-header" class="text-center">
                     <h2>{{ get_company_name() }}</h2>
                     <h5>{{ get_company_address() }}</h5>
@@ -190,7 +190,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <td>{{ $record->getUraianName() }}</td>
                                 <td>{{ $record->participant->nama_peserta }}</td>
                                 <td>{{ $record->participant->nik_peserta }}</td>
-                                <td>{{ date( 'd-m-Y', strtotime( $record->participant->tanggal_lahir ) ) }}</td>
+                                <td>{{ date( 'd-m-Y', strtotime( $record->participant->tanggal_lahir )) }}</td>
                                 <td>{{ ucwords( $record->participant->jenis_kelamin ) }}</td>
                                 <td>{{ $record->nama_factory }}</td>
                                 <td>{{ $record->nama_departemen }}</td>
@@ -205,8 +205,15 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <td class="column-action text-center">
                                     <a class="btn btn-default btn-xs fa fa-eye detail" data-toggle="modal"
                                         data-target="#modal-detail"
+
                                         data-namapeserta="{{ $record->participant->nama_peserta }}"
-                                        data-nikpeserta="{{ $record->participant->nik_peserta }}"> Detail</a>
+                                        data-nikpeserta="{{ $record->participant->nik_peserta }}"
+                                        data-namafactory="{{ $record->nama_factory }}"     
+
+
+
+
+                                        > Detail</a>
                                 </td>
                             </tr>
                             @php
@@ -217,13 +224,13 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                     </table>
                 </div>
 
-                <div class="form-group">
+               <!--  <div class="form-group">
                     @php
                     $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     $print_url = str_replace( url( 'report/accident' ), url( 'print/accident' ), $actual_link );
                     @endphp
                     <a href="{{ $print_url }}" class="btn btn-primary" target="_blank">Print</a>
-                </div>
+                </div> -->
                 <div>
                     {{$medicalRecords->appends([
                     'filter_by' => $filter_by,
@@ -264,30 +271,37 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Detail </h4>
+                <h4 class="modal-title">Data Detail Rekam Medis </h4>
             </div>
-        </div class="modal-body table-responsive">
-        <table class="table table-bordered no-margin">
-            <tbody>
-                <tr>
-                    <th style="">nama</th>
-                    <td><span id="nama-peserta"></span> </td>
-                </tr>
-                <tr>
-                    <th style="">nik</th>
-                    <td><span id="nik-peserta"></span> </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+            <div class="modal-body table-responsive">
+                <table class="table table-bordered no-margin">
+                <tbody>
+                    <tr>
+                        <th style="">nama</th>
+                        <td><span id="nama-peserta"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">nik</th>
+                        <td><span id="nik-peserta"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Factory</th>
+                        <td><span id="nama-factory"></span> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 </div>
 <script>
     $(document).ready(function(){
         $(document).on('click','.detail', function(){
             var nama = $(this).data('namapeserta');
             var nik = $(this).data('nikpeserta');
+            var factorys = $(this).data('namafactory');
             $('#nama-peserta').text(nama);
             $('#nik-peserta').text(nik);
+            $('#nama-factory').text(factorys);
+
         });
 
         @if ($filter_by)

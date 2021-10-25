@@ -163,12 +163,16 @@ Smart Clinic System - Data Rekam Medis
                 <td>{{ $medrecdata->diagnosis ? $medrecdata->diagnosis->nama_diagnosa : ''}}</td>
                 <td>
                     <a id="detail" class="btn btn-default fa fa-eye" data-toggle='modal' data-target="#modal-detail"
-                        data-nik="{{ $medrecdata->participant ? $medrecdata->participant->nik_peserta : ''}}"
-                        data-nama="{{ $medrecdata->nama_peserta}}" data-factory="{{ $medrecdata->nama_factory}}"
+                        data-nikpeserta="{{ $medrecdata->participant ? $medrecdata->participant->nik_peserta : '' }}"
+                        data-nama="{{ $medrecdata->nama_peserta}}" 
+                        data-factory="{{ $medrecdata->nama_factory}}"
                         data-departemen="{{ $medrecdata->nama_departemen}}"
-                        data-diagnosa="{{ $medrecdata->kode_diagnosa}}"
+                        data-poli="{{ $medrecdata->poliRegistration ? $medrecdata->poliRegistration->poli->nama_poli : '' }}"
+                        data-diagnosa="{{ $medrecdata->iddiagnosa}}"
+                        data-namadokter="{{ $medrecdata->dokter_rawat}}"
                         data-namadiagnosa="{{ $medrecdata->diagnosis ? $medrecdata->diagnosis->nama_diagnosa : ''}}"
-                        data-keluhan="{{ $medrecdata->keluhan}}">detail</a>
+                        data-keluhan="{{ $medrecdata->keluhan}}"
+                        data-tanggal="{{ $medrecdata->created_at}}">detail</a>
                 </td>
             </tr>
             <?php endforeach ?>
@@ -200,12 +204,40 @@ Smart Clinic System - Data Rekam Medis
                 <table class="table table-bordered no-margin">
                     <tbody>
                         <tr>
-                            <th style="">NIK Pasien</th>
-                            <td><span id="nik_peserta"></span></td>
+                            <th style="">NIK Peserta</th>
+                            <td><span id="nik-peserta"></span></td>
                         </tr>
                         <tr>
-                            <th style="">Data Keluhan</th>
+                            <th style="">Nama Peserta</th>
+                            <td><span id="nama_peserta"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="">Factory</th>
+                            <td><span id="nama_factory"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="">Departemen</th>
+                            <td><span id="nama_departemen"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="">Poli</th>
+                            <td><span id="nama_poli"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="">Diagnosa</th>
+                            <td><span id="kode_diagnosa"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="">Dokter Pemeriksa</th>
+                            <td><span id="nama-dokter"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="">Keluhan</th>
                             <td><span id="keluhan"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="">Tanggal</th>
+                            <td><span id="tanggal-masuk"></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -218,10 +250,24 @@ Smart Clinic System - Data Rekam Medis
 <script type="text/javascript">
     $(document).ready(function(){
         $(document).on('click', '#detail', function() {
-          var niks = $(this).data('nik');
+          var niks = $(this).data('nikpeserta');
           var keluhans = $(this).data('keluhan');
-          $('#nik_peserta').text(niks);
-          $('#keluhan').text(keluhans);  
+          var namapeserta = $(this).data('nama');
+          var Factorys = $(this).data('factory');
+          var Departemens = $(this).data('departemen');
+          var Polis = $(this).data('poli');
+          var Diagnos = $(this).data('diagnosa');
+          var Namadokters = $(this).data('namadokter');
+          var tanggals = $(this).data('tanggal');
+          $('#nik-peserta').text(niks);
+          $('#keluhan').text(keluhans);
+          $('#nama_peserta').text(namapeserta);  
+          $('#nama_factory').text(Factorys);  
+          $('#nama_departemen').text(Departemens);  
+          $('#nama_poli').text(Polis);  
+          $('#kode_diagnosa').text(Diagnos);  
+          $('#nama-dokter').text(Namadokters);  
+          $('#tanggal-masuk').text(tanggals);  
         });
 
         $('#filter_by').on('change', function () {
