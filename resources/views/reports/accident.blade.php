@@ -176,7 +176,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <th style="">Factory</th>
                                 <th style="">Departemen</th>
                                 <th style="">Tanggal Pelaporan</th>
-                                <th style="">Tindakan</th>
+                                <th style="">SKS/Rujukan</th>
                                 <th style="">Prewiev</th>
                             </tr>
                         </thead>
@@ -196,10 +196,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <td>{{ $record->nama_departemen }}</td>
                                 <td>{{ $record->accident ? $record->accident->tanggal_lapor : '' }}</td>
                                 <td>
-                                    {{
-                                    $record->sick_letter_count
-                                    ? 'SKS'
-                                    : ($record->referece_letter_count ? 'RUJUKAN' :'-')
+                                    {{ $record->sick_letter_count ? 'SKS' : ($record->referece_letter_count ? 'RUJUKAN' :'-')
                                     }}
                                 </td>
                                 <td class="column-action text-center">
@@ -208,7 +205,23 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
 
                                         data-namapeserta="{{ $record->participant->nama_peserta }}"
                                         data-nikpeserta="{{ $record->participant->nik_peserta }}"
-                                        data-namafactory="{{ $record->nama_factory }}"     
+                                        data-namafactory="{{ $record->nama_factory }}"
+                                        data-tanggallapor="{{ $record->accident ? $record->accident->tanggal_lapor : '' }}"
+                                        data-jeniskecelakaan="{{ $record->accident ? $record->accident->jenis_kecelakaan : '' }}"
+                                        data-akibatkecelakaan="{{ $record->accident ? $record->accident->akibat_kecelakaan : '' }}"
+                                        data-tindakans="{{ $record->accident ? $record->accident->tindakan : '' }}"
+                                        data-penyebab="{{ $record->accident ? $record->accident->penyebab_kecelakaan : '' }}"
+                                        data-rekom="{{ $record->accident ? $record->accident->rekomendasi : '' }}"
+                                        data-keterangankecelakaan="{{ $record->accident ? $record->accident->keterangan_kecelakaan : '' }}"
+                                        data-harikejadian="{{ $record->accident ? $record->accident->hari_kejadian : '' }}"
+                                        data-tanggalkejadian="{{ $record->accident ? $record->accident->tanggal_kejadian : '' }}"
+                                        data-saksis="{{ $record->accident ? $record->accident->saksi : '' }}"
+                                        data-atasanlangsung="{{ $record->accident ? $record->accident->atasan_langsung : '' }}"
+                                        data-telepons="{{ $record->accident ? $record->accident->telepon : '' }}"
+                                        data-namapjkaryawan="{{ $record->accident ? $record->accident->nama_penanggung_jawab : '' }}"
+                                        data-jabatans="{{ $record->accident ? $record->accident->jabatan : '' }}"
+                                        data-tglrekap="{{ $record->accident ? $record->accident->created_at : '' }}"
+
 
 
 
@@ -288,6 +301,66 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                         <th style="">Factory</th>
                         <td><span id="nama-factory"></span> </td>
                     </tr>
+                    <tr>
+                        <th style="">Tanggal Pelaporan</th>
+                        <td><span id="tanggal-lapor"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Jenis Kecelakaan</th>
+                        <td><span id="jenis-kecelakaan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Akibat Kecelakaan</th>
+                        <td><span id="akibat-Kecelakaan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Pemberisan SKS / Rujukan</th>
+                        <td><span id="tindakans"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Mesin / Peralatan / Benda Penyebab Terjadinya Kecelakaan</th>
+                        <td><span id="penyebab-kecelakaan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Rekomendasi Dokter / Paramedis </th>
+                        <td><span id="rekom-kecelakaan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Penjelasan Terjadinya Kecelakaan</th>
+                        <td><span id="penjelasan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Hari Terjadinya Kecelakaan</th>
+                        <td><span id="hari-Kejadian"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Tanggal Kejadian</th>
+                        <td><span id="tanggal-Kejadian"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Saksi Mata</th>
+                        <td><span id="saksi"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Atasan Langsung Korban</th>
+                        <td><span id="atasan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">No Telepon Atasan</th>
+                        <td><span id="telepon"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Nama Pelapor Kejadian / Penanggung Jawab</th>
+                        <td><span id="nama-pelapor"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Jabatan Pelapor</th>
+                        <td><span id="jabatan-pelapor"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Tanggal di Input</th>
+                        <td><span id="tanggal-input"></span> </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -298,9 +371,40 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             var nama = $(this).data('namapeserta');
             var nik = $(this).data('nikpeserta');
             var factorys = $(this).data('namafactory');
+            var tgllapor = $(this).data('tanggallapor');
+            var jkecelakaan = $(this).data('jeniskecelakaan');
+            var akecelakaan = $(this).data('akibatkecelakaan');
+            var tindakans = $(this).data('tindakans');
+            var penyebabs = $(this).data('penyebab');
+            var rekoms = $(this).data('rekom');
+            var keterangans = $(this).data('keterangankecelakaan');
+            var haris = $(this).data('harikejadian');
+            var tanggals = $(this).data('tanggalkejadian');
+            var saksis = $(this).data('saksis');
+            var atasans = $(this).data('atasanlangsung');
+            var telepons = $(this).data('telepons');
+            var namapjkar = $(this).data('namapjkaryawan');
+            var jabatans = $(this).data('jabatans');
+            var tglrekap = $(this).data('tglrekap');
+
             $('#nama-peserta').text(nama);
             $('#nik-peserta').text(nik);
             $('#nama-factory').text(factorys);
+            $('#tanggal-lapor').text(tgllapor);
+            $('#jenis-kecelakaan').text(jkecelakaan);
+            $('#akibat-Kecelakaan').text(akecelakaan);
+            $('#tindakans').text(tindakans);
+            $('#penyebab-kecelakaan').text(penyebabs);
+            $('#rekom-kecelakaan').text(rekoms);
+            $('#penjelasan').text(keterangans);
+            $('#hari-Kejadian').text(haris);
+            $('#tanggal-Kejadian').text(tanggals);
+            $('#saksi').text(saksis);
+            $('#atasan').text(atasans);
+            $('#telepon').text(telepons);
+            $('#nama-pelapor').text(namapjkar);
+            $('#jabatan-pelapor').text(jabatans);
+            $('#tanggal-input').text(tglrekap);
 
         });
 
