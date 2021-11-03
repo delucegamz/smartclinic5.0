@@ -110,7 +110,7 @@ Smart Clinic System - Data Observasi
                         <td>{{ get_eye_opening( $od->k_mata ) }}</td>
                         <td>{{ get_verbal_response( $od->k_bicara ) }}</td>
                         <td>{{ get_motoric_response( $od->k_motorik ) }}</td>
-                        <td>{{ $od->td_bawah }} / {{ $od->td_atas }}</td>
+                        <td>{{ $od->td_atas }} / {{ $od->td_bawah }}</td>
                         <td>{{ $od->suhu }}</td>
                         <td>{{ $od->nadi }}</td>
                         <td>{{ $od->jalan_nafas }}</td>

@@ -103,7 +103,7 @@
     <div id="login-footer">
         <div class="container">
             <div class="login-footer-copyright">
-                Copyright &copy; 2016 PT Prima Yasa Medika.
+                Copyright &copy; 2021 PT Indo Graha Dharmala.
             </div>
 
             <div class="login-colorpicker-wrapper">

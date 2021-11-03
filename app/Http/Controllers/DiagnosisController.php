@@ -96,7 +96,7 @@ class DiagnosisController extends Controller
             $diagnosa = new Diagnosis();
 
             $diagnosa->nama_diagnosa = $input['name'];
-            $diagnosa->kode_diagnosa = Diagnosis::generate_id();
+            $diagnosa->kode_diagnosa = $input['code'];
             $diagnosa->id_pengguna = $idpengguna;
 
             $insert = $diagnosa->save();

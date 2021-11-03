@@ -12,32 +12,28 @@
 
 namespace ClassPreloader\Parser;
 
-use PhpParser\NodeTraverser as BaseTraverser;
+use ClassPreloader\Exceptions\StrictTypesException;
+use PhpParser\Node;
+use PhpParser\Node\Stmt\DeclareDeclare;
 
 /**
- * This is the file node visitor class.
+ * This is the strict types visitor class.
  *
- * This allows a filename to be set when visiting.
+ * This allows us to identify files containing stict types declorations.
  */
-class NodeTraverser extends BaseTraverser
+class StrictTypesVisitor extends AbstractNodeVisitor
 {
     /**
-     * Transverse the file.
+     * Enter and modify the node.
      *
-     * @param array  $nodes
-     * @param string $filename
+     * @param \PhpParser\Node $node
      *
-     * @return \PhpParser\Node[]
+     * @throws \ClassPreloader\Exceptions\StrictTypesException
+     *
+     * @return null
      */
-    public function traverseFile(array $nodes, $filename)
+    public function enterNode(Node $node)
     {
-        // Set the correct state on each visitor
-        foreach ($this->visitors as $visitor) {
-            if ($visitor instanceof AbstractNodeVisitor) {
-                $visitor->setFilename($filename);
-            }
-        }
-
-        return $this->traverse($nodes);
-    }
-}
+        if ($node instanceof DeclareDeclare && ($node->getLine() === 1 || $node->getLine() === 2)) {
+            throw new StrictTypesException();
+      

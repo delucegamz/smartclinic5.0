@@ -148,7 +148,7 @@ Smart Clinic System - Data Diagnosa
                     		<div class="col-xs-7">
                     			<div class="input-group">
   									<span class="input-group-addon" id="code-icon"><i class="fa fa-barcode"></i></span>
- 			 						<input type="text" class="form-control required" placeholder="Kode" aria-describedby="code-icon" name="code" id="code" disabled />
+ 			 						<input type="text" class="form-control required" placeholder="Kode" aria-describedby="code-icon" name="code" id="code" />
 								</div>
 								<div class="error-placement"></div>
                     		</div>

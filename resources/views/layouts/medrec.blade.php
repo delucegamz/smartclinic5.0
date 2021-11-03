@@ -96,17 +96,18 @@ $poli_kebidanan = (int) get_setting( 'poli_kebidanan' );
 								<i class="fa <?php echo $uraian == 11 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="11"></i> Umum
 							</label>
 
-							@if( $poliregistration->id_poli != $igd )
+							
 							<label>
 								<i class="fa <?php echo $uraian == 44 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="44"></i> Kontrol Kecelakaan Kerja
+							</label>
+							<label>
+								<i class="fa <?php echo $uraian == 66 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="66"></i> Kontrol Kecelakaan Lalu Lintas
 							</label>
 
 							<label>
 								<i class="fa <?php echo $uraian == 55 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="55"></i> Kontrol Pasca Rawat Inap
 							</label>
-							@endif
-
-							@if( $poliregistration->id_poli == $igd )
+							
 							<label>
 								<i class="fa <?php echo $uraian == 33 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="33"></i> Kecelakaan Lalu Lintas
 							</label>
@@ -114,8 +115,8 @@ $poli_kebidanan = (int) get_setting( 'poli_kebidanan' );
 							<label>
 								<i class="fa <?php echo $uraian == 22 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="22"></i> Kecelakaan Kerja
 							</label>
-							@endif
-
+<!-- 							
+ -->
 							@if( $poliregistration->id_poli == $poli_kebidanan )
 							<label>
 								<i class="fa <?php echo $uraian == 66 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="66"></i> ANC
@@ -269,7 +270,7 @@ $poli_kebidanan = (int) get_setting( 'poli_kebidanan' );
 		    								$is_observation = $observation ? 1 : 0;
 		    							?>
 
-		    							Observasi <input type="checkbox" data-toggle="toggle" id="need-observation" name="need-observation" value="{{ $is_observation }}"<?php if( $is_observation ) echo " checked disabled" ?> />
+		    							Melakukan Tindakan Medis <input type="checkbox" data-toggle="toggle" id="need-observation" name="need-observation" value="{{ $is_observation }}"<?php if( $is_observation ) echo " checked disabled" ?> />
 		    						</label>
 		    					</div>
 		    				</div>
