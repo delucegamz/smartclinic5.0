@@ -128,7 +128,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             $date_from_formatted = ( !empty( $start_date ) ) ? date( 'd M Y', strtotime( $start_date ) ) : '';
             $date_to_formatted = ( !empty( $end_date ) ) ? date( 'd M Y', strtotime( $end_date ) ) : date( 'd M Y' );
             @endphp
-            <div id="response-update">
+                <div id="response-update">
                 <div id="print-header" class="text-center">
                     <h2>{{ get_company_name() }}</h2>
                     <h5>{{ get_company_address() }}</h5>
@@ -179,7 +179,9 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <th style="">Factory</th>
                                 <th style="">Departemen</th>
                                 <th style="">Tanggal Pelaporan</th>
+
                                 <th style="text-align: center;" >Tindakan lanjutan (SKS/Rujukan/Kembali Bekerja)</th>
+
                                 <th style="">Prewiev</th>
                             </tr>
                         </thead>
@@ -193,21 +195,20 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <td>{{ $record->getUraianName() }}</td>
                                 <td>{{ $record->participant->nama_peserta }}</td>
                                 <td>{{ $record->participant->nik_peserta }}</td>
-                                <td>{{ date( 'd-m-Y', strtotime( $record->participant->tanggal_lahir ) ) }}</td>
+                                <td>{{ date( 'd-m-Y', strtotime( $record->participant->tanggal_lahir )) }}</td>
                                 <td>{{ ucwords( $record->participant->jenis_kelamin ) }}</td>
                                 <td>{{ $record->nama_factory }}</td>
                                 <td>{{ $record->nama_departemen }}</td>
                                 <td>{{ $record->accident ? $record->accident->tanggal_lapor : '' }}</td>
                                 <td>
-                                    {{
-                                    $record->sick_letter_count
-                                    ? 'SKS'
-                                    : ($record->referece_letter_count ? 'RUJUKAN' :'KEMBALI BEKERJA')
+
+                                    {{$record->sick_letter_count  ? 'SKS' : ($record->referece_letter_count ? 'RUJUKAN' :'KEMBALI BEKERJA')
                                     }}
                                 </td>
                                 <td class="column-action text-center">
                                     <a id="detail" class="btn btn-default btn-xs fa fa-eye detail" data-toggle="modal"
                                         data-target="#modal-detail"
+
                                         data-namapeserta="{{ $record->participant->nama_peserta }}"
                                         data-nikpeserta="{{ $record->participant->nik_peserta }}"
                                         data-namafactory="{{ $record->nama_factory }}"
@@ -226,6 +227,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                         data-namapjkaryawan="{{ $record->accident ? $record->accident->nama_penanggung_jawab : '' }}"
                                         data-jabatans="{{ $record->accident ? $record->accident->jabatan : '' }}"
                                         data-tglrekap="{{ $record->accident ? $record->accident->created_at : '' }}"> Detail</a>
+
                                 </td>
                             </tr>
                             @php
@@ -380,6 +382,96 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
 });
 </script>
 
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Data Detail Rekam Medis </h4>
+            </div>
+            <div class="modal-body table-responsive">
+                <table class="table table-bordered no-margin">
+                    <tbody>
+                    <tr>
+                        <th style="">nama</th>
+                        <td><span id="nama-peserta"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">nik</th>
+                        <td><span id="nik-peserta"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Factory</th>
+                        <td><span id="nama-factory"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Tanggal Pelaporan</th>
+                        <td><span id="tanggal-lapor"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Jenis Kecelakaan</th>
+                        <td><span id="jenis-kecelakaan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Akibat Kecelakaan</th>
+                        <td><span id="akibat-Kecelakaan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Pemberisan SKS / Rujukan</th>
+                        <td><span id="tindakans"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Mesin / Peralatan / Benda Penyebab Terjadinya Kecelakaan</th>
+                        <td><span id="penyebab-kecelakaan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Rekomendasi Dokter / Paramedis </th>
+                        <td><span id="rekom-kecelakaan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Penjelasan Terjadinya Kecelakaan</th>
+                        <td><span id="penjelasan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Hari Terjadinya Kecelakaan</th>
+                        <td><span id="hari-Kejadian"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Tanggal Kejadian</th>
+                        <td><span id="tanggal-Kejadian"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Saksi Mata</th>
+                        <td><span id="saksi"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Atasan Langsung Korban</th>
+                        <td><span id="atasan"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">No Telepon Atasan</th>
+                        <td><span id="telepon"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Nama Pelapor Kejadian / Penanggung Jawab</th>
+                        <td><span id="nama-pelapor"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Jabatan Pelapor</th>
+                        <td><span id="jabatan-pelapor"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Tanggal di Input</th>
+                        <td><span id="tanggal-input"></span> </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>        
+</div>
 <script>
     $(document).ready(function(){
         $(document).on('click','.detail', function(){
@@ -420,6 +512,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             $('#nama-pelapor').text(namapjkar);
             $('#jabatan-pelapor').text(jabatans);
             $('#tanggal-input').text(tglrekap);
+
         });
 
         @if ($filter_by)

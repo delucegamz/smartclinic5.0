@@ -108,6 +108,7 @@ $poli_kebidanan = (int) get_setting( 'poli_kebidanan' );
 								<i class="fa <?php echo $uraian == 55 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="55"></i> Kontrol Pasca Rawat Inap
 							</label>
 							
+
 							<label>
 								<i class="fa <?php echo $uraian == 33 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="33"></i> Kecelakaan Lalu Lintas
 							</label>
@@ -269,8 +270,8 @@ $poli_kebidanan = (int) get_setting( 'poli_kebidanan' );
 		    							<?php 
 		    								$is_observation = $observation ? 1 : 0;
 		    							?>
+	    							Melakukan Tindakan Medis <input type="checkbox" data-toggle="toggle" id="need-observation" name="need-observation" value="{{ $is_observation }}"<?php if( $is_observation ) echo " checked disabled" ?> />
 
-		    							Melakukan Tindakan Medis <input type="checkbox" data-toggle="toggle" id="need-observation" name="need-observation" value="{{ $is_observation }}"<?php if( $is_observation ) echo " checked disabled" ?> />
 		    						</label>
 		    					</div>
 		    				</div>
