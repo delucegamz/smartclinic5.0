@@ -215,7 +215,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                         data-tanggallapor="{{ $record->accident ? $record->accident->tanggal_lapor : '' }}"
                                         data-jeniskecelakaan="{{ $record->accident ? $record->accident->jenis_kecelakaan : '' }}"
                                         data-akibatkecelakaan="{{ $record->accident ? $record->accident->akibat_kecelakaan : '' }}"
-                                        data-tindakans="{{ $record->accident ? $record->accident->tindakan : '' }}"
+                                        data-tindakans="{{$record->sick_letter_count  ? 'SKS' : ($record->referece_letter_count ? 'RUJUKAN' :'KEMBALI BEKERJA')}}"
                                         data-penyebab="{{ $record->accident ? $record->accident->penyebab_kecelakaan : '' }}"
                                         data-rekom="{{ $record->accident ? $record->accident->rekomendasi : '' }}"
                                         data-keterangankecelakaan="{{ $record->accident ? $record->accident->keterangan_kecelakaan : '' }}"
@@ -273,18 +273,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             </div>
             <div class="modal-body table-responsive">
                 <table class="table table-bordered no-margin">
-<!-- <div class="modal fade" id="modal-detail">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Detail </h4>
-            </div>
-        </div class="modal-body table-responsive">
-        <table class="table table-bordered no-margin">
-            <tbody> -->
+
                 <tbody>
                     <tr>
                         <th style="">nama</th>
