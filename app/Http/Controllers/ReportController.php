@@ -438,12 +438,12 @@ class ReportController extends Controller
                 return $query->whereHas('poliRegistration', function ($query) use ($start_date, $end_date) {
                     if ($start_date) {
                         $start_date = Carbon::createFromFormat('Y-m-d', $start_date)->startOfDay()->toDateTimeString();
-                        $query->whereDate('tgl_selesai', '>=', $start_date);
+                        $query->whereDate('created_at', '>=', $start_date);
                     }
 
                     if ($end_date) {
                         $end_date = Carbon::createFromFormat('Y-m-d', $end_date)->endOfDay()->toDateTimeString();
-                        $query->whereDate('tgl_selesai', '<=', $end_date);
+                        $query->whereDate('created_at', '<=', $end_date);
                     }
 
                     return $query;
