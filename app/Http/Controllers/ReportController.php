@@ -354,6 +354,9 @@ class ReportController extends Controller
         $nik_peserta = $request->input('nik_peserta');
         $per_page = $request->input('per_page', 10);
 
+        
+        
+
         if( !current_user_can( 'laporan_rekam_medis' ) ) die( 'Anda tidak diperbolehkan melihat halaman ini!' );
 
         $medicalRecords = MedicalRecord::with([
@@ -365,13 +368,14 @@ class ReportController extends Controller
             ->when($start_date || $end_date, function ($query) use($start_date, $end_date) {
                 return $query->whereHas('poliRegistration', function ($query) use ($start_date, $end_date) {
                     if ($start_date) {
+                        
                         $start_date = Carbon::createFromFormat('Y-m-d', $start_date)->startOfDay()->toDateTimeString();
-                        $query->whereDate('tgl_selesai', '>=', $start_date);
+                        $query->whereDate('created_at', '>=', $start_date);
                     }
     
                     if ($end_date) {
                         $end_date = Carbon::createFromFormat('Y-m-d', $end_date)->endOfDay()->toDateTimeString();
-                        $query->whereDate('tgl_selesai', '<=', $end_date);
+                        $query->whereDate('created_at', '<=', $end_date);
                     }
     
                     return $query;
@@ -393,7 +397,11 @@ class ReportController extends Controller
             })
             ->withCount(['sickLetter', 'referenceLetter'])
             ->orderBy( 'created_at', 'DESC')
+            // ->toSql();
             ->paginate($per_page);
+
+            // dd($medicalRecords);
+            
 
         return view( 'reports.accident', [ 
             'medicalRecords' => $medicalRecords,
