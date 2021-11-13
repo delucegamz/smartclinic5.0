@@ -74,6 +74,9 @@ class MedicalRecord extends Model
                 break;
             case 55:
                 return 'Kontrol Pasca Rawat Inap';
+                break; 
+            case 99:
+                return 'Kontrol Kecelakaan Lalu Lintas';
                 break;
             
             default:
