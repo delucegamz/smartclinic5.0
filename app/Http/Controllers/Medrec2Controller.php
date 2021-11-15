@@ -28,10 +28,10 @@ class Medrec2Controller extends Controller
 		$per_page = $request->input('per_page', 10);
 
     	$halaman = 'medrec2';
-
-		$diagnoses = Cache::remember('diagnoses', Carbon::now()->addHour(), function () {
-			return Diagnosis::orderBy('nama_diagnosa')->get(['kode_diagnosa', 'nama_diagnosa']);
-		});
+		$diagnoses = Diagnosis::orderBy('nama_diagnosa')->get(['kode_diagnosa', 'nama_diagnosa']);
+		// $diagnoses = Cache::remember('diagnoses', Carbon::now()->addHour(), function () {
+		// 	return Diagnosis::orderBy('nama_diagnosa')->get(['kode_diagnosa', 'nama_diagnosa']);
+		// });
 
         $medrec_list = MedicalRecord::with([
 				'participant',
@@ -91,9 +91,7 @@ class Medrec2Controller extends Controller
 		$medrec_list = MedicalRecord::with([
 			'participant',
 			'diagnosis',
-			'poliRegistration.poli',
-			'user',
-			'user.staff'
+			'poliRegistration.poli'
 		])
 		->when($nik_peserta, function ($query) use ($nik_peserta) {
 			return $query->whereHas('participant', function ($query) use ($nik_peserta) {
@@ -121,6 +119,7 @@ class Medrec2Controller extends Controller
 		->orderBy('created_at', 'DESC')
 		->get();
 
+		// return $medrec_list;
 		return Excel::create('rekam_medis', function ($excel) use ($medrec_list) {
 			$excel->sheet('Sheet', function($sheet) use ($medrec_list) {
 				$sheet->loadView('excel.medrec', [
