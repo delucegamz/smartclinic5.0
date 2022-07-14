@@ -21,7 +21,7 @@
 <body class="dashboard">
     <div id="header">
         <div class="container">
-            <div id="header-title"><a href="{{ url( '/' ) }}" title="Back to dashboard"><img src="{{URL::asset('assets/images/logo.png')}}" /></a></div>
+            <div id="header-title"><a href="{{ url( '/' ) }}" title="Back to dashboard"><img src="{{URL::asset('assets/images/logo-login-ummi.png')}}" /></a></div>
             <div id="header-right">
                 <div class="login-header-info-wrapper">
                     <span id="clock"></span>
@@ -280,7 +280,7 @@
     <div id="login-footer">
         <div class="container">
             <div class="login-footer-copyright">
-                Copyright &copy; 2021 PT Indo Graha Dharmala.
+                Copyright &copy; 2022 Klinik UMMI Sukabumi.
             </div>
             <div class="login-colorpicker-wrapper">
                 <p>Set Your Best Color</p>

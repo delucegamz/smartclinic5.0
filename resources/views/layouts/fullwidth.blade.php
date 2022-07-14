@@ -43,7 +43,7 @@
     <div id="login-footer">
         <div class="container">
             <div class="login-footer-copyright">
-                Copyright &copy; 2021 PT Indo Graha Dharmala.
+                Copyright &copy; 2022 Klinik UMMI Sukabumi.
             </div>
             <div class="login-colorpicker-wrapper">
                 <p>Set Your Best Color</p>

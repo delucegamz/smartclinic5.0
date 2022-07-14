@@ -25,7 +25,8 @@
     <div id="login-header" class="clearfix">
         <div class="container">
             <div class="login-header-title pull-left">
-                <p class="login-title">Smart Clinic System</p>
+                <p class="login-title">Sistem Klinik UMMI Sukabumi</p>
+
             </div>
 
             <div class="login-header-info pull-right">
@@ -38,20 +39,15 @@
     <div id="login">
         <div class="container">
             <div class="login-content pull-left">
-                <h1>Welcome <span>to Enter System</span></h1>
-
-                <p>This is Software to Manage Your 
-                Organization Record and Medical Record
-                Starting from Entry Data to Report Data
-                Patient, Management, Employee, etc
-                For the first User you can register with klik 
-                sign up by the administrator and for guest
-                your can view visit report with klik view datamailm
-                thank for use this information system</p>
+                <img src="{{URL::asset('assets/images/logo-ummi.png')}}">
+                <!-- <h1>Welcome <span>to Enter System</span></h1>
+ -->
+                <p>Software Informasi Kesehatan 
+                   </p>
 
                 <div class="login-action">
                     <!--<a href="{{ url( '/register' ) }}" class="btn btn-signup" data-toggle="modal" data-target="#register-modal">SIGN UP</a>-->
-                    <a href="{{ url( '/register' ) }}" class="btn btn-signup">SIGN UP</a>
+                    <!-- <a href="{{ url( '/register' ) }}" class="btn btn-signup">SIGN UP</a> -->
                     <!--<a href="#" class="btn btn-view-data">VIEW DATA</a>-->
                 </div>
             </div>
@@ -103,7 +99,7 @@
     <div id="login-footer">
         <div class="container">
             <div class="login-footer-copyright">
-                Copyright &copy; 2021 PT Indo Graha Dharmala.
+                Copyright &copy; 2022 Klinik UMMI Sukabumi.
             </div>
 
             <div class="login-colorpicker-wrapper">
