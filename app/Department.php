@@ -50,6 +50,8 @@ class Department extends Model
                 $departments[$data->id_departemen] = array(
                     'kode_departemen' => $data->kode_departemen,
                     'nama_departemen' => $data->nama_departemen,
+                    'kode_pabrik' => $data->nama_pabrik,
+                    'nama_pabrik' => $factory['nama_pabrik'],
                     'kode_factory' => $data->nama_factory,
                     'nama_factory' => $factory['nama_factory'],
                     'kode_client' => $data->nama_client,

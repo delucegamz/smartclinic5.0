@@ -346,6 +346,7 @@ class ReportController extends Controller
 
     public function accident(Request $request)
     {
+        $filter_pabrik = $request->input('filter_pabrik');
         $filter_by = $request->input('filter_by');
         $accident = $request->input('accident');
         $control = $request->input('control');
@@ -405,6 +406,7 @@ class ReportController extends Controller
 
         return view( 'reports.accident', [ 
             'medicalRecords' => $medicalRecords,
+            'filter_pabrik'  => $filter_pabrik,
             'filter_by'      => $filter_by,
             'start_date'     => $start_date,
             'end_date'       => $end_date,
@@ -604,7 +606,7 @@ class ReportController extends Controller
                 }
             }else{
                 if( $date_from || $date_to ){
-                    $others = Anc::whereIn( 'id_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();    
+                    $others = Anc::whereIn( 'aid_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();    
                 }else{
                     $others = Anc::orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();    
                 }

@@ -17,7 +17,8 @@ class MedicalRecord extends Model
         'nama_peserta', 
         'nama_factory', 
         'nama_client', 
-        'nama_departemen', 
+        'nama_departemen',
+        'nama_pabrik', 
         'iddiagnosa', 
         'diagnosa_dokter', 
         'uraian', 
@@ -89,6 +90,12 @@ class MedicalRecord extends Model
     {
         return $this->belongsTo(PoliRegistration::class, 'id_pendaftaran_poli', 'id_pendaftaran');
     }
+
+    public function factory()
+    {   
+        return $this->belongsTo(Factory::class, 'nama_factory','nama_factory');
+    }
+
 
     public function participant()
     {

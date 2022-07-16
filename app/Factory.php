@@ -10,7 +10,7 @@ class Factory extends Model
 {
     protected $table = 'm_factory';
     protected $primaryKey = 'id_factory';
-	protected $fillable = array( 'kode_factory', 'nama_factory', 'id_pengguna' );
+	protected $fillable = array( 'kode_factory', 'nama_factory','nama_pabrik', 'id_pengguna' );
 
 	public static function generate_id(){
         $ids = DB::table( 'm_factory' )
@@ -35,6 +35,12 @@ class Factory extends Model
         return ( $factory && $factory->nama_factory ) ? $factory->nama_factory : '';
     }
 
+    public static function get_pabrik( $id = 0 ){
+        $factory = Factory::find( $id );
+
+        return ( $factory && $factory->nama_pabrik ) ? $factory->nama_pabrik : '';
+    }
+
     public static function get_factory( $id = 0 ){
         $factories = Cache::rememberForever('factories', function() {
             $datas = DB::table( 'm_factory' )->get();
@@ -45,6 +51,7 @@ class Factory extends Model
                 $factories[$data->id_factory] = array(
                     'kode_factory' => $data->kode_factory,
                     'nama_factory' => $data->nama_factory,
+                    'nama_pabrik' => $data->nama_pabrik,
                 );
             }
 

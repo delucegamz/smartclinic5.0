@@ -34,6 +34,29 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                 <div class="row">
                     <div class="col-12 col-sm-3">
                         <div class="form-group">
+                            <label for="filter_pabrik">Filter Pabrik</label>
+                            <select name="filter_pabrik" class="form-control input-sm" id="filter_pabrik">
+                                <option value="">Pilih Pabrik</option>
+                                <option value="pabrika">
+                                    Pabrik A
+                                </option>
+                                <option value="pabrikb">
+                                    Pabrik B
+                                </option>
+                                <option value="pusat">
+                                    Pusat
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    
+
+                    <div class="col-12 col-sm-3">
+                        <div class="form-group">
                             <label for="filter_by">Filter By</label>
                             <select name="filter_by" class="form-control input-sm" id="filter_by">
                                 <option value="">Pilih Filter</option>
@@ -177,6 +200,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <th style="">Tanggal Lahir</th>
                                 <th style="">L/P</th>
                                 <th style="">Factory</th>
+                                <th style="">Pabrik</th>
                                 <th style="">Departemen</th>
                                 <th style="">Tanggal Pelaporan</th>
 
@@ -198,6 +222,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <td>{{ date( 'd-m-Y', strtotime( $record->participant->tanggal_lahir )) }}</td>
                                 <td>{{ ucwords( $record->participant->jenis_kelamin ) }}</td>
                                 <td>{{ $record->nama_factory }}</td>
+                                <td>{{ $record->factory->nama_pabrik }}</td>
                                 <td>{{ $record->nama_departemen }}</td>
                                 <td>{{ $record->accident ? $record->accident->tanggal_lapor : '' }}</td>
                                 <td>
@@ -205,6 +230,8 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                     {{$record->sick_letter_count  ? 'SKS' : ($record->referece_letter_count ? 'RUJUKAN' :'KEMBALI BEKERJA')
                                     }}
                                 </td>
+
+                                <!-- PARAMETER YANG DI AMBIL UNTUK QUERY JAVASCRIPT SAAT MENAMPILKAN DETAIL -->
                                 <td class="column-action text-center">
                                     <a id="detail" class="btn btn-default btn-xs fa fa-eye detail" data-toggle="modal"
                                         data-target="#modal-detail"
@@ -212,6 +239,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                         data-namapeserta="{{ $record->participant->nama_peserta }}"
                                         data-nikpeserta="{{ $record->participant->nik_peserta }}"
                                         data-namafactory="{{ $record->nama_factory }}"
+                                        data-namapabrik="{{ $record->factory->nama_pabrik }}"
                                         data-tanggallapor="{{ $record->accident ? $record->accident->tanggal_lapor : '' }}"
                                         data-jeniskecelakaan="{{ $record->accident ? $record->accident->jenis_kecelakaan : '' }}"
                                         data-akibatkecelakaan="{{ $record->accident ? $record->accident->akibat_kecelakaan : '' }}"
@@ -246,7 +274,8 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                     <a href="{{ $print_url }}" class="btn btn-primary" target="_blank">Print</a>
                 </div> -->
                 <div>
-                    {{$medicalRecords->appends([
+                    {{$medicalRecords->appends([                
+                    'filter_pabrik' => $filter_pabrik,                
                     'filter_by' => $filter_by,
                     'start_date' => $start_date,
                     'end_date' => $end_date,
@@ -286,6 +315,10 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                     <tr>
                         <th style="">Factory</th>
                         <td><span id="nama-factory"></span> </td>
+                    </tr>
+                    <tr>
+                        <th style="">Pabrik</th>
+                        <td><span id="nama-pabrik"></span> </td>
                     </tr>
                     <tr>
                         <th style="">Tanggal Pelaporan</th>
@@ -396,6 +429,10 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                         <td><span id="nama-factory"></span> </td>
                     </tr>
                     <tr>
+                        <th style="">Pabrik</th>
+                        <td><span id="nama-pabrik"></span> </td>
+                    </tr>
+                    <tr>
                         <th style="">Tanggal Pelaporan</th>
                         <td><span id="tanggal-lapor"></span> </td>
                     </tr>
@@ -467,6 +504,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             var nama = $(this).data('namapeserta');
             var nik = $(this).data('nikpeserta');
             var factorys = $(this).data('namafactory');
+            var pabrik = $(this).data('namapabrik');
             var tgllapor = $(this).data('tanggallapor');
             var jkecelakaan = $(this).data('jeniskecelakaan');
             var akecelakaan = $(this).data('akibatkecelakaan');
@@ -486,6 +524,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             $('#nama-peserta').text(nama);
             $('#nik-peserta').text(nik);
             $('#nama-factory').text(factorys);
+            $('#nama-pabrik').text(pabrik);
             $('#tanggal-lapor').text(tgllapor);
             $('#jenis-kecelakaan').text(jkecelakaan);
             $('#akibat-Kecelakaan').text(akecelakaan);
@@ -555,6 +594,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
         });
 
         function getParams() {
+            let pabrik = $('#filter_pabrik').val();
             let filter = $('#filter_by').val();
             let accident = $('#accident').val();
             let control = $('#control').val();
@@ -563,7 +603,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
             let nikPeserta = $('#nik_peserta').val();
             let per_page = $('#per_page_hidden').val();
 
-           return `filter_by=${filter}&accident=${accident}&control=${control}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}&per_page=${per_page}`
+           return `filter_pabrik=${pabrik}&filter_by=${filter}&accident=${accident}&control=${control}&nik_peserta=${nikPeserta}&start_date=${start_date}&end_date=${end_date}&per_page=${per_page}`
         }
 
         $('#excel-export').on('click', function () {

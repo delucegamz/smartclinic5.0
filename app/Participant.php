@@ -9,7 +9,7 @@ use Cache;
 class Participant extends Model
 {
     protected $table = 'm_peserta';
-    protected $primaryKey = 'id_peserta';
+    protected $primaryKey = 'id_peserta';   
 	protected $fillable = array( 
         'kode_peserta', 
         'no_medrec', 
@@ -112,6 +112,19 @@ class Participant extends Model
             $department = Department::find( $participant->id_departemen );
 
             return ( $participant && $participant->id_departemen ) ? get_factory_name( $department->nama_factory ) : '';
+        }else{
+            return '';
+        }
+    }
+    
+
+    public static function get_pabrik( $id = 0 ){
+        $participant = Participant::find( $id );
+
+        if( $participant ){
+            $department = Department::find( $participant->id_departemen );
+
+            return ( $participant && $participant->id_departemen ) ? get_pabrik_code( $department->nama_pabrik ) : '';
         }else{
             return '';
         }
