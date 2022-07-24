@@ -95,7 +95,7 @@ class ReportController extends Controller
 
         if( $filter == 'belum-direkam' || $filter == 'all' ){
             $medrec_results = array();
-        }elseif( $filter == 'tidak-direkam' ){  
+        }elseif( $filter == 'tidak-direkam' ){
             $medrec_results = MedicalRecord::where( 'status', '=', 1 )->get();
         }elseif( $filter == 'sudah-direkam' ){
             $medrec_results = MedicalRecord::where( 'status', '=', 0 )->get();
@@ -239,10 +239,10 @@ class ReportController extends Controller
 
         $poli = Poli::all();
 
-        return view( 'reports.registration', [ 
-            'datas' => $datas, 
-            'rows' => $rows, 
-            'page' => $page, 
+        return view( 'reports.registration', [
+            'datas' => $datas,
+            'rows' => $rows,
+            'page' => $page,
             'i' => $i,
             'date_from' => $date_from,
             'date_to' => $date_to,
@@ -289,29 +289,29 @@ class ReportController extends Controller
         if( $rows == 'all' ){
             if( $participant_id ){
                 if( $date_from || $date_to ){
-                    $others = MedicalRecord::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();    
+                    $others = MedicalRecord::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();
                 }else{
-                    $others = MedicalRecord::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();    
+                    $others = MedicalRecord::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();
                 }
             }else{
                 if( $date_from || $date_to ){
-                    $others = MedicalRecord::whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();    
+                    $others = MedicalRecord::whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();
                 }else{
-                    $others = MedicalRecord::orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();    
+                    $others = MedicalRecord::orderBy( 'id_pemeriksaan_poli', 'ASC' )->get();
                 }
             }
         }else{
             if( $participant_id ){
                 if( $date_from || $date_to ){
-                    $others = MedicalRecord::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->paginate( $rows );    
+                    $others = MedicalRecord::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->paginate( $rows );
                 }else{
-                    $others = MedicalRecord::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->paginate( $rows );   
+                    $others = MedicalRecord::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->paginate( $rows );
                 }
             }else{
                 if( $date_from || $date_to ){
-                    $others = MedicalRecord::whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->paginate( $rows );    
+                    $others = MedicalRecord::whereIn( 'id_pendaftaran_poli', $poliregistrations )->orderBy( 'id_pemeriksaan_poli', 'ASC' )->paginate( $rows );
                 }else{
-                    $others = MedicalRecord::orderBy( 'id_pemeriksaan_poli', 'ASC' )->paginate( $rows );  
+                    $others = MedicalRecord::orderBy( 'id_pemeriksaan_poli', 'ASC' )->paginate( $rows );
                 }
             }
         }
@@ -323,15 +323,15 @@ class ReportController extends Controller
         else
             $i = 1;
 
-        return view( 'reports.medrec', [ 
-            'datas' => $others, 
-            'rows' => $rows, 
-            'page' => $page, 
-            'i' => $i, 
-            'participant' => $participant, 
+        return view( 'reports.medrec', [
+            'datas' => $others,
+            'rows' => $rows,
+            'page' => $page,
+            'i' => $i,
+            'participant' => $participant,
             'participant_id' => $participant_id,
             'date_from' => $date_from,
-            'date_to' => $date_to 
+            'date_to' => $date_to
         ]);
     }
 
@@ -355,8 +355,7 @@ class ReportController extends Controller
         $nik_peserta = $request->input('nik_peserta');
         $per_page = $request->input('per_page', 10);
 
-        
-        
+
 
         if( !current_user_can( 'laporan_rekam_medis' ) ) die( 'Anda tidak diperbolehkan melihat halaman ini!' );
 
@@ -365,20 +364,26 @@ class ReportController extends Controller
                 'accident',
                 'poliRegistration',
                 'poliRegistration.poli',
+                'factory',
             ])
+            ->when($filter_pabrik, function ($query) use ($filter_pabrik) {
+                return $query->whereHas('factory', function ($query) use ($filter_pabrik) {
+                    return $query->where('nama_pabrik', $filter_pabrik);
+                });
+            })
             ->when($start_date || $end_date, function ($query) use($start_date, $end_date) {
                 return $query->whereHas('poliRegistration', function ($query) use ($start_date, $end_date) {
                     if ($start_date) {
-                        
+
                         $start_date = Carbon::createFromFormat('Y-m-d', $start_date)->startOfDay()->toDateTimeString();
                         $query->whereDate('created_at', '>=', $start_date);
                     }
-    
+
                     if ($end_date) {
                         $end_date = Carbon::createFromFormat('Y-m-d', $end_date)->endOfDay()->toDateTimeString();
                         $query->whereDate('created_at', '<=', $end_date);
                     }
-    
+
                     return $query;
                 });
             })
@@ -402,9 +407,8 @@ class ReportController extends Controller
             ->paginate($per_page);
 
             // dd($medicalRecords);
-            
 
-        return view( 'reports.accident', [ 
+        return view( 'reports.accident', [
             'medicalRecords' => $medicalRecords,
             'filter_pabrik'  => $filter_pabrik,
             'filter_by'      => $filter_by,
@@ -419,6 +423,7 @@ class ReportController extends Controller
 
     public function export(Request $request)
     {
+        $filter_pabrik = $request->input('filter_pabrik');
         $filter_by = $request->input('filter_by');
         $accident = $request->input('accident');
         $control = $request->input('control');
@@ -435,7 +440,13 @@ class ReportController extends Controller
                 'poliRegistration.poli',
                 'user',
                 'user.staff',
+                'factory',
             ])
+            ->when($filter_pabrik, function ($query) use ($filter_pabrik) {
+                return $query->whereHas('factory', function ($query) use ($filter_pabrik) {
+                    return $query->where('nama_pabrik', $filter_pabrik);
+                });
+            })
             ->when($start_date || $end_date, function ($query) use($start_date, $end_date) {
                 return $query->whereHas('poliRegistration', function ($query) use ($start_date, $end_date) {
                     if ($start_date) {
@@ -516,29 +527,29 @@ class ReportController extends Controller
         if( $rows == 'all' ){
             if( $participant_id ){
                 if( $date_from || $date_to ){
-                    $others = Observation::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_observasi', $observations )->orderBy( 'id_observasi', 'DESC' )->get();    
+                    $others = Observation::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_observasi', $observations )->orderBy( 'id_observasi', 'DESC' )->get();
                 }else{
-                    $others = Observation::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_observasi', 'DESC' )->get();    
+                    $others = Observation::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_observasi', 'DESC' )->get();
                 }
             }else{
                 if( $date_from || $date_to ){
-                    $others = Observation::whereIn( 'id_observasi', $observations )->orderBy( 'id_observasi', 'DESC' )->get();    
+                    $others = Observation::whereIn( 'id_observasi', $observations )->orderBy( 'id_observasi', 'DESC' )->get();
                 }else{
-                    $others = Observation::orderBy( 'id_observasi', 'DESC' )->get();    
+                    $others = Observation::orderBy( 'id_observasi', 'DESC' )->get();
                 }
             }
         }else{
             if( $participant_id ){
                 if( count( $observations ) ){
-                    $others = Observation::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_observasi', $observations )->orderBy( 'id_observasi', 'DESC' )->paginate( $rows );    
+                    $others = Observation::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_observasi', $observations )->orderBy( 'id_observasi', 'DESC' )->paginate( $rows );
                 }else{
-                    $others = Observation::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_observasi', 'DESC' )->paginate( $rows );   
+                    $others = Observation::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_observasi', 'DESC' )->paginate( $rows );
                 }
             }else{
                 if( count( $observations ) ){
-                    $others = Observation::whereIn( 'id_observasi', $observations )->orderBy( 'id_observasi', 'DESC' )->paginate( $rows );    
+                    $others = Observation::whereIn( 'id_observasi', $observations )->orderBy( 'id_observasi', 'DESC' )->paginate( $rows );
                 }else{
-                    $others = Observation::orderBy( 'id_observasi', 'DESC' )->paginate( $rows );  
+                    $others = Observation::orderBy( 'id_observasi', 'DESC' )->paginate( $rows );
                 }
             }
         }
@@ -550,15 +561,15 @@ class ReportController extends Controller
         else
             $i = 1;
 
-        return view( 'reports.observation', [ 
-            'datas' => $others, 
-            'rows' => $rows, 
-            'page' => $page, 
-            'i' => $i, 
-            'participant' => $participant, 
+        return view( 'reports.observation', [
+            'datas' => $others,
+            'rows' => $rows,
+            'page' => $page,
+            'i' => $i,
+            'participant' => $participant,
             'participant_id' => $participant_id,
             'date_from' => $date_from,
-            'date_to' => $date_to 
+            'date_to' => $date_to
         ]);
     }
 
@@ -600,29 +611,29 @@ class ReportController extends Controller
         if( $rows == 'all' ){
             if( $participant_id ){
                 if( $date_from || $date_to ){
-                    $others = Anc::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();    
+                    $others = Anc::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();
                 }else{
-                    $others = Anc::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();    
+                    $others = Anc::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();
                 }
             }else{
                 if( $date_from || $date_to ){
-                    $others = Anc::whereIn( 'aid_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();    
+                    $others = Anc::whereIn( 'aid_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();
                 }else{
-                    $others = Anc::orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();    
+                    $others = Anc::orderBy( 'id_pemeriksaan_anc', 'DESC' )->get();
                 }
             }
         }else{
             if( $participant_id ){
                 if( $date_from || $date_to ){
-                    $others = Anc::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->paginate( $rows );    
+                    $others = Anc::where( 'id_peserta', '=', $participant_id )->whereIn( 'id_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->paginate( $rows );
                 }else{
-                    $others = Anc::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->paginate( $rows );   
+                    $others = Anc::where( 'id_peserta', '=', $participant_id )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->paginate( $rows );
                 }
             }else{
                 if( $date_from || $date_to ){
-                    $others = Anc::whereIn( 'id_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->paginate( $rows );    
+                    $others = Anc::whereIn( 'id_pemeriksaan_anc', $ancs )->orderBy( 'id_pemeriksaan_anc', 'DESC' )->paginate( $rows );
                 }else{
-                    $others = Anc::orderBy( 'id_pemeriksaan_anc', 'DESC' )->paginate( $rows );  
+                    $others = Anc::orderBy( 'id_pemeriksaan_anc', 'DESC' )->paginate( $rows );
                 }
             }
         }
@@ -634,15 +645,15 @@ class ReportController extends Controller
         else
             $i = 1;
 
-        return view( 'reports.anc', [ 
-            'datas' => $others, 
-            'rows' => $rows, 
-            'page' => $page, 
-            'i' => $i, 
-            'participant' => $participant, 
+        return view( 'reports.anc', [
+            'datas' => $others,
+            'rows' => $rows,
+            'page' => $page,
+            'i' => $i,
+            'participant' => $participant,
             'participant_id' => $participant_id,
             'date_from' => $date_from,
-            'date_to' => $date_to 
+            'date_to' => $date_to
         ]);
     }
 
@@ -997,24 +1008,24 @@ class ReportController extends Controller
         $clients = Client::all();
         $factories = Factory::all();
 
-        return view( 'reports.visit', [ 
-            'datas' => $datas, 
-            'rows' => $rows, 
-            's' => $s, 
-            'page' => $page, 
-            'i' => $i, 
-            'poli' => $poli, 
-            'departments' => $departments, 
-            'clients' => $clients, 
-            'factories' => $factories, 
-            'participant' => $participant, 
+        return view( 'reports.visit', [
+            'datas' => $datas,
+            'rows' => $rows,
+            's' => $s,
+            'page' => $page,
+            'i' => $i,
+            'poli' => $poli,
+            'departments' => $departments,
+            'clients' => $clients,
+            'factories' => $factories,
+            'participant' => $participant,
             'participantsearch' => $participantsearch,
-            'department' => $department, 
-            'client' => $client, 
+            'department' => $department,
+            'client' => $client,
             'factory' => $factory,
             'view' => $view,
             'date_from' => $date_from,
-            'date_to' => $date_to  
+            'date_to' => $date_to
         ]);
     }
 
@@ -1056,11 +1067,11 @@ class ReportController extends Controller
         if( isset( $_GET['type'] ) && !empty( $_GET['type'] ) ){
             $type = $_GET['type'];
 
-            $res_doctors = isset( $_GET['doctor'] ) && !empty( $_GET['doctor'] ) ? $_GET['doctor'] : array( 'all' ); 
-            $res_services = isset( $_GET['service'] ) && !empty( $_GET['service'] ) ? $_GET['service'] : array( 'all' ); 
-            $res_diagnosis = isset( $_GET['diagnosis-id'] ) && !empty( $_GET['diagnosis-id'] ) ? $_GET['diagnosis-id'] : 'all'; 
-            $res_poli = isset( $_GET['poli'] ) && !empty( $_GET['poli'] ) ? $_GET['poli'] : array( 'all' ); 
-            $res_factories = isset( $_GET['factory'] ) && !empty( $_GET['factory'] ) ? $_GET['factory'] : array( 'all' ); 
+            $res_doctors = isset( $_GET['doctor'] ) && !empty( $_GET['doctor'] ) ? $_GET['doctor'] : array( 'all' );
+            $res_services = isset( $_GET['service'] ) && !empty( $_GET['service'] ) ? $_GET['service'] : array( 'all' );
+            $res_diagnosis = isset( $_GET['diagnosis-id'] ) && !empty( $_GET['diagnosis-id'] ) ? $_GET['diagnosis-id'] : 'all';
+            $res_poli = isset( $_GET['poli'] ) && !empty( $_GET['poli'] ) ? $_GET['poli'] : array( 'all' );
+            $res_factories = isset( $_GET['factory'] ) && !empty( $_GET['factory'] ) ? $_GET['factory'] : array( 'all' );
             $res_departments = isset( $_GET['department'] ) && !empty( $_GET['department'] ) ? $_GET['department'] : array( 'all' );
             $date_from = isset( $_GET['date-from'] ) && !empty( $_GET['date-from'] ) ? $_GET['date-from'] : '';
             $date_to = isset( $_GET['date-to'] ) && !empty( $_GET['date-to'] ) ? $_GET['date-to'] : '';
@@ -1068,13 +1079,13 @@ class ReportController extends Controller
             $is_results = true;
         }
 
-        return view( 'reports.recap', [ 
-            'doctors' => $doctors, 
-            'diagnosis' => $diagnosis, 
-            'poli' => $poli, 
-            'factories' => $factories, 
+        return view( 'reports.recap', [
+            'doctors' => $doctors,
+            'diagnosis' => $diagnosis,
+            'poli' => $poli,
+            'factories' => $factories,
             'departments' => $departments,
-            'is_results' => $is_results, 
+            'is_results' => $is_results,
             'res_doctors' => $res_doctors,
             'res_services' => $res_services,
             'res_diagnosis' => $res_diagnosis,
@@ -1165,10 +1176,10 @@ class ReportController extends Controller
 
         $poli = Poli::all();
 
-        return view( 'reports.doctorcheck', [ 
-            'datas' => $datas, 
-            'rows' => $rows, 
-            'page' => $page, 
+        return view( 'reports.doctorcheck', [
+            'datas' => $datas,
+            'rows' => $rows,
+            'page' => $page,
             'i' => $i,
             'date_from' => $date_from,
             'date_to' => $date_to,
@@ -1206,7 +1217,7 @@ class ReportController extends Controller
                     $ins[] = $res->id_ambulance_out;
                 }
 
-    
+
                 if( $date_from && $date_to ){
                     $datas = AmbulanceOut::whereIn( 'id_ambulance_out', $ins )
                                           ->where( 'tanggal_keluar', '>=', $date_from . ' 00:00:00')
@@ -1260,7 +1271,7 @@ class ReportController extends Controller
                     $ins[] = $res->id_ambulance_out;
                 }
 
-    
+
                 if( $date_from && $date_to ){
                     $datas = AmbulanceOut::whereIn( 'id_ambulance_out', $ins )
                                           ->where( 'tanggal_keluar', '>=', $date_from . ' 00:00:00')
@@ -1425,7 +1436,7 @@ class ReportController extends Controller
         }else{
             if( $date_from && $date_to ) :
                 $datas = DoctorRecipe::where( 'created_at', '>=', $date_from . " 00:00:00" )->where( 'created_at', '<=', $date_to . " 23:59:59" )->orderBy( 'id_resep', 'desc' )->paginate( $rows );
-            elseif( $date_from ) : 
+            elseif( $date_from ) :
                 $datas = DoctorRecipe::where( 'created_at', '>=', $date_from . " 00:00:00" )->orderBy( 'id_resep', 'desc' )->paginate( $rows );
             elseif( $date_to ) :
                 $datas = DoctorRecipe::where( 'created_at', '<=', $date_to . " 23:59:59" )->orderBy( 'id_resep', 'desc' )->paginate( $rows );
@@ -1472,7 +1483,7 @@ class ReportController extends Controller
         }
 
         $page = isset( $_GET['page'] ) ? absint( $_GET['page'] ) : 1;
-        
+
 
         if( $rows != 'all' )
             $i = ( $page * $rows ) - ( $rows - 1 );
