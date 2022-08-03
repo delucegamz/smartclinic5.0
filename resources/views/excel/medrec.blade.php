@@ -11,11 +11,11 @@
             <th>Created_at</th>
             <th>Dokter Rawat</th>
             <th>Keluhan</th>
-            <th>Catatan Pemeriksaan</th>
+            {{-- <th>Catatan Pemeriksaan</th>
             <th>Kode Diagnosa</th>
             <th>Nama Diagnosa</th>
             <th>Diagnosa Dokter</th>
-            <th>Pengguna</th>
+            <th>Pengguna</th> --}}
         </tr>
     </thead>
 
@@ -32,11 +32,11 @@
             <td>{{ $medrecdata->created_at }}</td>
             <td>{{ $medrecdata->dokter_rawat }}</td>
             <td>{{ $medrecdata->keluhan }}</td>
-            <td>{{ $medrecdata->catatan_pemeriksaan }}</td>
+            {{-- <td>{{ $medrecdata->catatan_pemeriksaan }}</td>
             <td>{{ $medrecdata->iddiagnosa }}</td>
             <td>{{ $medrecdata->diagnosis ? $medrecdata->diagnosis->nama_diagnosa : ''}}</td>
             <td>{{ $medrecdata->diagnosa_dokter }}</td>
-            <td>{{ $medrecdata->user ? $medrecdata->user->staff->nama_karyawan : '' }}</td>
+            <td>{{ $medrecdata->user ? $medrecdata->user->staff->nama_karyawan : '' }}</td> --}}
         </tr>
         @endforeach
     </tbody>
