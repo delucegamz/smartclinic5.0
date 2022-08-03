@@ -100,10 +100,12 @@ $poli_kebidanan = (int) get_setting( 'poli_kebidanan' );
 							<label>
 								<i class="fa <?php echo $uraian == 44 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="44"></i> Kontrol Kecelakaan Kerja
 							</label>
-							<label>
-								<i class="fa <?php echo $uraian == 66 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="66"></i> Kontrol Kecelakaan Lalu Lintas
-							</label>
 
+							<label>
+								<i class="fa <?php echo $uraian == 99 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="99"></i> Kontrol Kecelakaan Lalu Lintas
+							</label>
+							
+					
 							<label>
 								<i class="fa <?php echo $uraian == 55 ? 'fa-dot-circle-o' : 'fa-circle-thin'; ?>" data-action="55"></i> Kontrol Pasca Rawat Inap
 							</label>

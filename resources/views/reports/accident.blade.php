@@ -86,7 +86,7 @@ Smart Clinic System - DAFTAR KUNJUNGAN PASIEN KECELAKAAN KERJA
                                 <option value="44" {{ $control==44 ? 'selected' : '' }}>
                                     Kontrol Kecelakaan Kerja
                                 </option>
-                                <option value="66" {{ $control==66 ? 'selected' : '' }}>
+                                <option value="99" {{ $control==99 ? 'selected' : '' }}>
                                     Kontrol Kecelakaan Lalu Lintas
                                 </option>
                                 <option value="55" {{ $control==55 ? 'selected' : '' }}>
